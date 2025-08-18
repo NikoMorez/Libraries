@@ -1,5 +1,5 @@
 import './assets/css/App.css'
-import Books from "./Components/Books.tsx";
+import Books from "./Pages/Books.tsx";
 import {Route, Routes} from "react-router-dom";
 import Header from "./Components/Header.tsx";
 
