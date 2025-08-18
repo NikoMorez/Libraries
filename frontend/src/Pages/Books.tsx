@@ -10,7 +10,7 @@ export default function Books() {
 
     useEffect(() => {
         axios
-            .get("/api/libraries")
+            .get("/api/books")
             .then((response) => {
                 setBooks(response.data);
 
