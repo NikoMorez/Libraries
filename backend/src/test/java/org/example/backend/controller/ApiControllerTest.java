@@ -50,7 +50,7 @@ class ApiControllerTest {
 
     @Test
     void testGetAllBooks()  throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/books")) // oder /api/books, s.o.
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
