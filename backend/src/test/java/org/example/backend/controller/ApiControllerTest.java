@@ -50,7 +50,7 @@ class ApiControllerTest {
     }
 
     @Test
-    void testGetAllBooks()  throws Exception {
+    void testGetAllBooks() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
@@ -62,10 +62,10 @@ class ApiControllerTest {
     }
 
     @Test
-    void testAddBook()  throws Exception {
+    void testAddBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
                   {
                       "title": "Die unendliche Geschichte",
                       "author": "Michael Ende",
@@ -74,7 +74,7 @@ class ApiControllerTest {
                       "publicationDate": "1979-09-01"
                   }
                 """
-                ))
+                        ))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(
                         """
@@ -89,5 +89,42 @@ class ApiControllerTest {
                 ))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id")
                         .isNotEmpty());
+    }
+
+    @Test
+    void testGetBookById_found() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Der Herr der Ringe"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value("J.R.R. Tolkien"));
+    }
+
+    @Test
+    void testUpdateBook_success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "1984 (Updated)",
+                                "author": "George Orwell",
+                                "isbn": "978-0-452-28423-4",
+                                "description": "Überarbeitete Beschreibung",
+                                "publicationDate": "1949-06-08"
+                            }
+                        """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("1984 (Updated)"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Überarbeitete Beschreibung"));
+    }
+
+    @Test
+    void testDeleteBook_success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/books/2"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/2"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
