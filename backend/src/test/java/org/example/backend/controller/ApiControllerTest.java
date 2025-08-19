@@ -127,4 +127,12 @@ class ApiControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books/2"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
+    @Test
+    void testGetAllBooks_returns204WhenEmpty() throws Exception {
+        bookRepo.deleteAll();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }
