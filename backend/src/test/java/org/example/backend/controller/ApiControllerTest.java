@@ -139,4 +139,32 @@ class ApiControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+    @Test
+    void testSearchGoogleBooks_returnsListOfBooks() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/search?query=myrie_zange_symmetrie_schneeflocken"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                  [
+                      {
+                          "title": "Myrie Zange",
+                          "author": "M. Skalabyrinth",
+                          "isbn": "9789403740478",
+                          "description": "",
+                          "publicationDate": "2024-04-25",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
+                      },
+                      {
+                          "title": "Die Symmetrie der Schneeflocken",
+                          "author": "Karla Byrinth",
+                          "isbn": "",
+                          "description": "",
+                          "publicationDate": "2019-01-01",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
+                      }
+                  ]
+                  """));
+    }
 }
