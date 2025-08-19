@@ -44,7 +44,7 @@ public class GoogleRequestService {
             }catch (Exception ignored){}
             books.add(new BookDTO(
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
-                    item.volumeInfo() != null && item.volumeInfo().authors() != null && item.volumeInfo().authors().length > 0 && item.volumeInfo().authors()[0] != null ? item.volumeInfo().authors()[0] : "",
+                    item.volumeInfo() != null && item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() && item.volumeInfo().authors().getFirst() != null ? item.volumeInfo().authors().getFirst() : "",
                     isbn13,
                     item.volumeInfo() != null && item.volumeInfo().description() != null ? item.volumeInfo().description() : "",
                     publicationDate,
