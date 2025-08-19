@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -72,6 +73,31 @@ class BookServiceTest {
         // THEN
         assertTrue(result.isEmpty());
         verify(bookRepo).findAll();
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void testGetBookById_returnsBook() {
+        // GIVEN
+        when(bookRepo.findById("2")).thenReturn(Optional.ofNullable(this.book2));
+
+        // WHEN
+        Book result = service.getBookById("2");
+
+        // THEN
+        assertEquals(book2, result);
+        verify(bookRepo).findById("2");
+        verifyNoMoreInteractions(bookRepo);
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void testGetBookById_returnsNull() {
+        // GIVEN
+        when(bookRepo.findById("100")).thenReturn(null);
+
+        // WHEN & THEN
+        assertThrows(NullPointerException.class, () -> service.getBookById("100"));
         verifyNoInteractions(idService);
     }
 }
