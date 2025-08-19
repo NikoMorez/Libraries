@@ -96,13 +96,14 @@ class BookServiceTest {
     @Test
     void testGetBookById_returnsBook() {
         // GIVEN
-        when(bookRepo.findById("2")).thenReturn(Optional.ofNullable(this.book2));
+        when(bookRepo.findById("2")).thenReturn(Optional.of(this.book2));
 
         // WHEN
-        Book result = service.getBookById("2");
+        Optional<Book> result = service.getBookById("2");
 
         // THEN
-        assertEquals(book2, result);
+        assertTrue(result.isPresent());
+        assertEquals(book2, result.get());
         verify(bookRepo).findById("2");
         verifyNoMoreInteractions(bookRepo);
         verifyNoInteractions(idService);
@@ -111,10 +112,14 @@ class BookServiceTest {
     @Test
     void testGetBookById_returnsNull() {
         // GIVEN
-        when(bookRepo.findById("100")).thenReturn(null);
+        when(bookRepo.findById("100")).thenReturn(Optional.empty());
 
-        // WHEN & THEN
-        assertThrows(NullPointerException.class, () -> service.getBookById("100"));
+        // WHEN
+        Optional<Book> result = service.getBookById("100");
+
+        // THEN
+        assertTrue(result.isEmpty());
+        verify(bookRepo).findById("100");
         verifyNoInteractions(idService);
     }
 
@@ -122,7 +127,7 @@ class BookServiceTest {
     void testAddBook_returnsBook() {
         // GIVEN
         when(idService.randomId()).thenReturn("3");
-        when(bookRepo.findById("3")).thenReturn(Optional.ofNullable(this.book3));
+        when(bookRepo.findById("3")).thenReturn(Optional.of(this.book3));
 
         // WHEN
         Book result = service.addBook(bookDTO3);
@@ -137,30 +142,60 @@ class BookServiceTest {
     @Test
     void updateBook_returnsBook() {
         // GIVEN
-        when(bookRepo.findById("3")).thenReturn(Optional.ofNullable(this.book3));
+        when(bookRepo.findById("3")).thenReturn(Optional.of(this.book3));
 
         // WHEN
-        Book result = service.updateBook("3", bookDTO3);
+        Optional<Book> result = service.updateBook("3", bookDTO3);
 
         // THEN
-        assertEquals(book3, result);
+        assertEquals(Optional.of(book3), result);
         verifyNoInteractions(idService);
         verify(bookRepo, times(1)).save(this.book3);
         verify(bookRepo, times(1)).findById("3");
     }
 
     @Test
-    void deleteBook_returnsBook() {
+    void updateBook_returnsEmpty_whenNotExists() {
         // GIVEN
-        when(bookRepo.findById("3")).thenReturn(Optional.ofNullable(this.book3));
+        when(bookRepo.findById("999")).thenReturn(Optional.empty());
 
         // WHEN
-        Book result = service.deleteBook("3");
+        Optional<Book> result = service.updateBook("999", bookDTO3);
 
         // THEN
-        assertEquals(book3, result);
+        assertTrue(result.isEmpty());
+        verify(bookRepo).findById("999");
+        verify(bookRepo, never()).save(any(Book.class));
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void deleteBook_returnsBook() {
+        // GIVEN
+        when(bookRepo.findById("3")).thenReturn(Optional.of(this.book3));
+
+        // WHEN
+        Optional<Book> result = service.deleteBook("3");
+
+        // THEN
+        assertEquals(Optional.of(book3), result);
         verifyNoInteractions(idService);
         verify(bookRepo, times(1)).findById("3");
         verify(bookRepo, times(1)).deleteById("3");
+    }
+
+    @Test
+    void deleteBook_returnsEmpty_whenNotExists() {
+        // GIVEN
+        when(bookRepo.findById("999")).thenReturn(Optional.empty());
+
+        // WHEN
+        Optional<Book> result = service.deleteBook("999");
+
+        // THEN
+        assertTrue(result.isEmpty());
+        verify(bookRepo).findById("999");
+        verify(bookRepo, never()).delete(any(Book.class));
+        verifyNoInteractions(idService);
     }
 }
