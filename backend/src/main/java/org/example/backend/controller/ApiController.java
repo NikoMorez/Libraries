@@ -3,7 +3,6 @@ package org.example.backend.controller;
 
 import org.example.backend.model.Book;
 import org.example.backend.model.BookDTO;
-import org.example.backend.model.GoogleResponse;
 import org.example.backend.service.BookService;
 import org.example.backend.service.GoogleRequestService;
 import org.springframework.http.HttpStatus;
@@ -63,7 +62,11 @@ public class ApiController {
     }
 
     @GetMapping("/search")
-    public GoogleResponse searchGoogleBooks(@RequestParam String query) {
-        return googleRequestService.searchGoogleBooks(query);
+    public ResponseEntity<List<BookDTO>> searchGoogleBooks(@RequestParam String query) {
+        List<BookDTO> books = googleRequestService.searchGoogleBooks(query);
+        if (books.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(books);
     }
 }

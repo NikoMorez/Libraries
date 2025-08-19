@@ -1,8 +1,14 @@
 package org.example.backend.service;
 
+import org.example.backend.model.BookDTO;
+import org.example.backend.model.GoogleIndustryIdentifier;
+import org.example.backend.model.GoogleItem;
 import org.example.backend.model.GoogleResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GoogleRequestService {
@@ -14,7 +20,28 @@ public class GoogleRequestService {
                 .baseUrl("https://www.googleapis.com/books/v1/volumes").build();
     }
 
-    public GoogleResponse searchGoogleBooks(String query) {
-        return restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
+    public List<BookDTO> searchGoogleBooks(String query) {
+        GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
+        List<GoogleItem> entries = new ArrayList<>();
+        response.items().stream().limit(10).forEach(entries::add);
+        List<BookDTO> books = new ArrayList<>();
+        for (GoogleItem item : entries) {
+            String isbn13 = "";
+            for (GoogleIndustryIdentifier identifier: item.volumeInfo().industryIdentifiers()){
+                if (identifier.type().equals("ISBN_13")){
+                    isbn13 = identifier.identifier();
+                }
+            }
+            books.add(new BookDTO(
+                    item.volumeInfo().title(),
+                    item.volumeInfo().authors()[0],
+                    isbn13,
+                    item.volumeInfo().description(),
+                    item.volumeInfo().publishedDate(),
+                    item.volumeInfo().imageLinks().smallThumbnail(),
+                    item.volumeInfo().imageLinks().thumbnail()
+            ));
+        }
+        return books;
     }
 }
