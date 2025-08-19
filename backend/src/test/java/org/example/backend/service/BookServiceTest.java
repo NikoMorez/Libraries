@@ -133,4 +133,19 @@ class BookServiceTest {
         verify(bookRepo, times(1)).save(this.book3);
         verify(bookRepo, times(1)).findById("3");
     }
+
+    @Test
+    void updateBook_returnsBook() {
+        // GIVEN
+        when(bookRepo.findById("3")).thenReturn(Optional.ofNullable(this.book3));
+
+        // WHEN
+        Book result = service.updateBook("3", bookDTO3);
+
+        // THEN
+        assertEquals(book3, result);
+        verifyNoInteractions(idService);
+        verify(bookRepo, times(1)).save(this.book3);
+        verify(bookRepo, times(1)).findById("3");
+    }
 }
