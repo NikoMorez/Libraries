@@ -75,7 +75,7 @@ class ApiControllerTest {
                   }
                 """
                 ))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(
                         """
                                           {

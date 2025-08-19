@@ -127,7 +127,7 @@ class BookServiceTest {
     void testAddBook_returnsBook() {
         // GIVEN
         when(idService.randomId()).thenReturn("3");
-        when(bookRepo.findById("3")).thenReturn(Optional.of(this.book3));
+        when(bookRepo.save(any(Book.class))).thenReturn(this.book3);
 
         // WHEN
         Book result = service.addBook(bookDTO3);
@@ -135,14 +135,15 @@ class BookServiceTest {
         // THEN
         assertEquals(book3, result);
         verify(idService, times(1)).randomId();
-        verify(bookRepo, times(1)).save(this.book3);
-        verify(bookRepo, times(1)).findById("3");
+        verify(bookRepo, times(1)).save(any(Book.class));
+        verify(bookRepo, never()).findById("3");
     }
 
     @Test
     void updateBook_returnsBook() {
         // GIVEN
         when(bookRepo.findById("3")).thenReturn(Optional.of(this.book3));
+        when(bookRepo.save(any(Book.class))).thenReturn(this.book3);
 
         // WHEN
         Optional<Book> result = service.updateBook("3", bookDTO3);
@@ -150,7 +151,7 @@ class BookServiceTest {
         // THEN
         assertEquals(Optional.of(book3), result);
         verifyNoInteractions(idService);
-        verify(bookRepo, times(1)).save(this.book3);
+        verify(bookRepo, times(1)).save(any(Book.class));
         verify(bookRepo, times(1)).findById("3");
     }
 
@@ -181,7 +182,7 @@ class BookServiceTest {
         assertEquals(Optional.of(book3), result);
         verifyNoInteractions(idService);
         verify(bookRepo, times(1)).findById("3");
-        verify(bookRepo, times(1)).deleteById("3");
+        verify(bookRepo, times(1)).delete(this.book3);
     }
 
     @Test
