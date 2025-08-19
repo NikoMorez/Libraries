@@ -1,6 +1,7 @@
 package org.example.backend.service;
 
 import org.example.backend.model.Book;
+import org.example.backend.model.BookDTO;
 import org.example.backend.repo.BookRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ class BookServiceTest {
     private Book book1;
     private Book book2;
 
+    private Book book3;
+    private BookDTO bookDTO3;
+
     @BeforeEach
     void setUp() {
         this.bookRepo = mock(BookRepo.class);
@@ -40,6 +44,19 @@ class BookServiceTest {
                 "978-0-452-28423-4",
                 "Dystopischer Klassiker",
                 LocalDate.of(1949, 6, 8));
+
+        this.book3 = new Book("3",
+                "Die unendliche Geschichte",
+                "Michael Ende",
+                "978-3-522-20260-2",
+                "Ein phantastisches Abenteuer in der Welt Phantásien",
+                LocalDate.of(1979, 9, 1));
+
+        this.bookDTO3 = new BookDTO("Die unendliche Geschichte",
+                "Michael Ende",
+                "978-3-522-20260-2",
+                "Ein phantastisches Abenteuer in der Welt Phantásien",
+                LocalDate.of(1979, 9, 1));
     }
 
     @Test
@@ -99,5 +116,21 @@ class BookServiceTest {
         // WHEN & THEN
         assertThrows(NullPointerException.class, () -> service.getBookById("100"));
         verifyNoInteractions(idService);
+    }
+
+    @Test
+    void testAddBook_returnsBook() {
+        // GIVEN
+        when(idService.randomId()).thenReturn("3");
+        when(bookRepo.findById("3")).thenReturn(Optional.ofNullable(this.book3));
+
+        // WHEN
+        Book result = service.addBook(bookDTO3);
+
+        // THEN
+        assertEquals(book3, result);
+        verify(idService, times(1)).randomId();
+        verify(bookRepo, times(1)).save(this.book3);
+        verify(bookRepo, times(1)).findById("3");
     }
 }
