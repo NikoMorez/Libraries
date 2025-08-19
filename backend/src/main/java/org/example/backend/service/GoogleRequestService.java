@@ -33,12 +33,21 @@ public class GoogleRequestService {
                     isbn13 = identifier.identifier();
                 }
             }
+            LocalDate publicationDate = LocalDate.of(0,1,1);
+            try {
+                if(item.volumeInfo().publishedDate().length() == 10) {
+                    publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
+                }else if(item.volumeInfo().publishedDate().length() == 4){
+                    int year = Integer.parseInt(item.volumeInfo().publishedDate());
+                    publicationDate = LocalDate.of(year,1,1);
+                }
+            }catch (Exception ignored){}
             books.add(new BookDTO(
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
                     item.volumeInfo() != null && item.volumeInfo().authors() != null && item.volumeInfo().authors().length > 0 && item.volumeInfo().authors()[0] != null ? item.volumeInfo().authors()[0] : "",
                     isbn13,
                     item.volumeInfo() != null && item.volumeInfo().description() != null ? item.volumeInfo().description() : "",
-                    item.volumeInfo() != null && item.volumeInfo().publishedDate() != null ? item.volumeInfo().publishedDate() : LocalDate.of(0, 1, 1),
+                    publicationDate,
                     item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().smallThumbnail() != null ? item.volumeInfo().imageLinks().smallThumbnail() : "",
                     item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().thumbnail() != null ? item.volumeInfo().imageLinks().thumbnail() : ""
             ));
