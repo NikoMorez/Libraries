@@ -3,7 +3,9 @@ package org.example.backend.controller;
 
 import org.example.backend.model.Book;
 import org.example.backend.model.BookDTO;
+import org.example.backend.model.GoogleResponse;
 import org.example.backend.service.BookService;
+import org.example.backend.service.GoogleRequestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import java.util.List;
 public class ApiController {
 
     private final BookService bookService;
+    private final GoogleRequestService googleRequestService;
 
-    public ApiController(BookService bookService) {
+    public ApiController(BookService bookService, GoogleRequestService googleRequestService) {
         this.bookService = bookService;
+        this.googleRequestService = googleRequestService;
     }
 
     @GetMapping
@@ -56,5 +60,10 @@ public class ApiController {
                 .map(b -> ResponseEntity.noContent().<Void>build())
                 .orElse(ResponseEntity.notFound().build());
 
+    }
+
+    @GetMapping("/search")
+    public GoogleResponse searchGoogleBooks(@RequestParam String query) {
+        return googleRequestService.searchGoogleBooks(query);
     }
 }
