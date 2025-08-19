@@ -35,14 +35,18 @@ class ApiControllerTest {
                 "J.R.R. Tolkien",
                 "978-3-86680-192-9",
                 "Ein episches Fantasy-Abenteuer",
-                LocalDate.of(1954, 7, 29));
+                LocalDate.of(1954, 7, 29),
+                "",
+                "");
 
         Book book2 = new Book("2",
                 "1984",
                 "George Orwell",
                 "978-0-452-28423-4",
                 "Dystopischer Klassiker",
-                LocalDate.of(1949, 6, 8));
+                LocalDate.of(1949, 6, 8),
+                "",
+                "");
 
         bookRepo.save(book1);
         bookRepo.save(book2);
