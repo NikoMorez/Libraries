@@ -4,5 +4,6 @@ export type Book = {
     author: string;
     isbn: string;
     description: string;
+    cover : string;
     publicationDate: string;
 }

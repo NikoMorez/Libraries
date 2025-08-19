@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+.cardsTextColor{
+    @apply dark:text-stone-300 text-zinc-800
+}
+
+.cardsBackGroundColor{
+    @apply dark:bg-stone-700 bg-gray-400
+}
+
+.cardsShadowBorder{
+    @apply shadow-lg rounded-2xl border dark:border-stone-900  shadow-stone-900
+}
+
+.cardsHover{
+    @apply hover:shadow-2xl hover:scale-105
+}

@@ -1,30 +1,40 @@
 import type {Book} from "../models/Book.tsx";
 import {Rating} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 
 export default function BookComponent( Book : {item:Book} ) {
+    const navigate = useNavigate();
+
     return (
         <div className="max-w-sm mx-auto my-4">
-            <div className="dark:bg-stone-700 bg-gray-400 shadow-lg rounded-2xl border dark:border-stone-900 p-6 transform transition hover:scale-105 hover:shadow-2xl shadow-stone-900">
-                <h2 className="text-xl font-bold dark:text-stone-300 text-zinc-800 mb-2">{Book.item.title}</h2>
+            <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
+                <div className={"cursor-pointer"} onClick={() => navigate(`/Books/${Book.item.id}`)}>
+                    <h2 className="text-xl font-bold cardsTextColor mb-2">{Book.item.title}</h2>
 
-                <p className="dark:text-stone-300 text-zinc-800  ">
-                    <span className="font-semibold">Autor:</span> {Book.item.author}
-                </p>
+                    <p className="cardsTextColor">
+                        <span className="font-semibold">Autor:</span> {Book.item.author}
+                    </p>
 
-                <p className="dark:text-stone-300 text-zinc-800">
-                    <span className="font-semibold">ISBN:</span> {Book.item.isbn}
-                </p>
+                    <p className="cardsTextColor">
+                        <span className="font-semibold">ISBN:</span> {Book.item.isbn}
+                    </p>
 
-                <p className="dark:text-stone-300 text-zinc-800">
-                    <span className="font-semibold">Veröffentlicht:</span> {new Date(Book.item.publicationDate).toLocaleDateString("de-DE")}
-                </p>
+                    <p className="cardsTextColor">
+                        <span className="font-semibold">Veröffentlicht:</span> {new Date(Book.item.publicationDate).toLocaleDateString("de-DE")}
+                    </p>
 
-                <p className="dark:text-stone-300 text-zinc-800 mt-3 text-sm">{Book.item.description}</p>
-
+                    <p className="cardsTextColor mt-3 text-sm">{Book.item.description}</p>
+                </div>
                 <div className="mt-4">
                     <Rating name="half-rating" defaultValue={0.5} precision={0.5} />
+                </div>
+                <div className="flex justify-end space-x-2 mt-4">
+                    <ManageSearchIcon className="cursor-pointer" onClick={() => navigate(`/Books/${Book.item.id}`)}/>
+                    <FavoriteIcon className="cursor-pointer"/>
                 </div>
             </div>
         </div>
