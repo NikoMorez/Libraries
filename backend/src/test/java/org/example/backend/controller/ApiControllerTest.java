@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -49,7 +50,7 @@ class ApiControllerTest {
     }
 
     @Test
-    void testGetAllBooks()  throws Exception {
+    void testGetAllBooks() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
@@ -58,5 +59,80 @@ class ApiControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.id=='1')].title", hasItem("Der Herr der Ringe")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.id=='2')].author", hasItem("George Orwell")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.id=='1')].publicationDate", hasItem("1954-07-29")));
+    }
+
+    @Test
+    void testAddBook() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                  {
+                      "title": "Die unendliche Geschichte",
+                      "author": "Michael Ende",
+                      "isbn": "978-3-522-20260-2",
+                      "description": "Ein phantastisches Abenteuer in der Welt Phantásien",
+                      "publicationDate": "1979-09-01"
+                  }
+                """
+                        ))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().json(
+                        """
+                                          {
+                                              "title": "Die unendliche Geschichte",
+                                              "author": "Michael Ende",
+                                              "isbn": "978-3-522-20260-2",
+                                              "description": "Ein phantastisches Abenteuer in der Welt Phantásien",
+                                              "publicationDate": "1979-09-01"
+                                          }
+                                        """
+                ))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id")
+                        .isNotEmpty());
+    }
+
+    @Test
+    void testGetBookById_found() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Der Herr der Ringe"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value("J.R.R. Tolkien"));
+    }
+
+    @Test
+    void testUpdateBook_success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "1984 (Updated)",
+                                "author": "George Orwell",
+                                "isbn": "978-0-452-28423-4",
+                                "description": "Überarbeitete Beschreibung",
+                                "publicationDate": "1949-06-08"
+                            }
+                        """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("1984 (Updated)"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Überarbeitete Beschreibung"));
+    }
+
+    @Test
+    void testDeleteBook_success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/books/2"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/2"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void testGetAllBooks_returns204WhenEmpty() throws Exception {
+        bookRepo.deleteAll();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }

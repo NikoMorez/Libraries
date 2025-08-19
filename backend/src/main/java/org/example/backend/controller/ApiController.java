@@ -2,10 +2,11 @@ package org.example.backend.controller;
 
 
 import org.example.backend.model.Book;
+import org.example.backend.model.BookDTO;
 import org.example.backend.service.BookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +21,40 @@ public class ApiController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.getAllBooks();
+
+        if (books.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable String id) {
+        return bookService.getBookById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> addBook(@RequestBody BookDTO bookDto) {
+        Book savedBook = bookService.addBook(bookDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(@PathVariable String id, @RequestBody BookDTO bookDto) {
+        return bookService.updateBook(id, bookDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable String id) {
+        return bookService.deleteBook(id)
+                .map(b -> ResponseEntity.noContent().<Void>build())
+                .orElse(ResponseEntity.notFound().build());
+
+    }
 }
