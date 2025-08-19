@@ -15,6 +15,6 @@ public class GoogleRequestService {
     }
 
     public GoogleResponse searchGoogleBooks(String query) {
-        return restClient.get().uri("?"+query).retrieve().body(GoogleResponse.class);
+        return restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
     }
 }
