@@ -7,6 +7,7 @@ import org.example.backend.model.GoogleResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class GoogleRequestService {
     public List<BookDTO> searchGoogleBooks(String query) {
         GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
         List<GoogleItem> entries = new ArrayList<>();
-        response.items().stream().limit(10).forEach(entries::add);
+        if (response != null) {response.items().stream().limit(10).forEach(entries::add);}
         List<BookDTO> books = new ArrayList<>();
         for (GoogleItem item : entries) {
             String isbn13 = "";
@@ -33,13 +34,13 @@ public class GoogleRequestService {
                 }
             }
             books.add(new BookDTO(
-                    item.volumeInfo().title(),
-                    item.volumeInfo().authors()[0],
+                    item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
+                    item.volumeInfo() != null && item.volumeInfo().authors() != null && item.volumeInfo().authors().length > 0 && item.volumeInfo().authors()[0] != null ? item.volumeInfo().authors()[0] : "",
                     isbn13,
-                    item.volumeInfo().description(),
-                    item.volumeInfo().publishedDate(),
-                    item.volumeInfo().imageLinks().smallThumbnail(),
-                    item.volumeInfo().imageLinks().thumbnail()
+                    item.volumeInfo() != null && item.volumeInfo().description() != null ? item.volumeInfo().description() : "",
+                    item.volumeInfo() != null && item.volumeInfo().publishedDate() != null ? item.volumeInfo().publishedDate() : LocalDate.of(0, 1, 1),
+                    item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().smallThumbnail() != null ? item.volumeInfo().imageLinks().smallThumbnail() : "",
+                    item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().thumbnail() != null ? item.volumeInfo().imageLinks().thumbnail() : ""
             ));
         }
         return books;
