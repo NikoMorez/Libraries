@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import type {Book} from "../models/Book.tsx";
 import axios from "axios";
 import BookSuggestion from "../Components/BookSuggestion.tsx";
@@ -6,15 +6,15 @@ import BookSuggestion from "../Components/BookSuggestion.tsx";
 export default function AddBookPage() {
 
     const [books, setBooks] = useState<Book[]>([]);
-    const [query, setQuery] = useState("Hello");
+    const [query, setQuery] = useState("");
 
-    useEffect(() => {
+    const searchBooks = () => {
         axios
             .get("/api/books/search?query="+query)
             .then((response) => {
                 setBooks(response.data);
-            })
-    }, []);
+            });
+    };
 
     return (
         <>
@@ -23,7 +23,7 @@ export default function AddBookPage() {
                     setQuery(event.target.value)
             } placeholder={"Enter description"}
                    value={query}/>
-            <button>Suchen</button>
+            <button onClick={searchBooks}>Suchen</button>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {books.map((book) => (
                 <BookSuggestion key={book.id} BookItem={book}/>
