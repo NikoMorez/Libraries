@@ -32,7 +32,7 @@ export default function BookEditPage() {
 
     return (
         <div className="cardsBackGroundColor cardsShadowBorder max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
-            <BookEditForm key={book.id} BookItem={book}/>
+            <BookEditForm key={book.id} book={book}/>
         </div>
     );
 }
