@@ -6,7 +6,7 @@ export default function BookDetail(Book : {BookItem:Book}) {
 
     return (
        <>
-            <img src={Book.BookItem.cover} alt={Book.BookItem.title} className="" />
+            <img src={Book.BookItem.largeCover} alt={Book.BookItem.title} className="" />
 
             <div className="">
                 <div>
