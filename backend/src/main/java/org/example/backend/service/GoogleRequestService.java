@@ -24,13 +24,15 @@ public class GoogleRequestService {
     public List<BookDTO> searchGoogleBooks(String query) {
         GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
         List<GoogleItem> entries = new ArrayList<>();
-        if (response != null) {response.items().stream().limit(10).forEach(entries::add);}
+        if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
         List<BookDTO> books = new ArrayList<>();
         for (GoogleItem item : entries) {
             String isbn13 = "";
-            for (GoogleIndustryIdentifier identifier: item.volumeInfo().industryIdentifiers()){
-                if (identifier.type().equals("ISBN_13")){
-                    isbn13 = identifier.identifier();
+            if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
+                for (GoogleIndustryIdentifier identifier : item.volumeInfo().industryIdentifiers()) {
+                    if (identifier.type().equals("ISBN_13")) {
+                        isbn13 = identifier.identifier();
+                    }
                 }
             }
             LocalDate publicationDate = LocalDate.of(0,1,1);
