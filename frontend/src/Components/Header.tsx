@@ -17,7 +17,7 @@ export default function Header() {
                               className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
                             Bücher
                         </Link>
-                        <Link to={"/add"}
+                        <Link to={"/books/add"}
                               className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
                             Bücher hinzufügen
                         </Link>
