@@ -1,9 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.model.BookDTO;
-import org.example.backend.model.GoogleIndustryIdentifier;
-import org.example.backend.model.GoogleItem;
-import org.example.backend.model.GoogleResponse;
+import org.example.backend.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -21,11 +18,12 @@ public class GoogleRequestService {
                 .baseUrl("https://www.googleapis.com/books/v1/volumes").build();
     }
 
-    public List<BookDTO> searchGoogleBooks(String query) {
+    public List<Book> searchGoogleBooks(String query) {
         GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
         List<GoogleItem> entries = new ArrayList<>();
         if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
-        List<BookDTO> books = new ArrayList<>();
+        List<Book> books = new ArrayList<>();
+        int idCount = 1;
         for (GoogleItem item : entries) {
             String isbn13 = "";
             if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
@@ -44,7 +42,8 @@ public class GoogleRequestService {
                     publicationDate = LocalDate.of(year,1,1);
                 }
             }catch (Exception ignored){}
-            books.add(new BookDTO(
+            books.add(new Book(
+                    String.valueOf(idCount++),
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
                     item.volumeInfo() != null && item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() && item.volumeInfo().authors().getFirst() != null ? item.volumeInfo().authors().getFirst() : "",
                     isbn13,

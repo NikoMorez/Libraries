@@ -62,8 +62,8 @@ public class ApiController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookDTO>> searchGoogleBooks(@RequestParam String query) {
-        List<BookDTO> books = googleRequestService.searchGoogleBooks(query);
+    public ResponseEntity<List<Book>> searchGoogleBooks(@RequestParam String query) {
+        List<Book> books = googleRequestService.searchGoogleBooks(query);
         if (books.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
