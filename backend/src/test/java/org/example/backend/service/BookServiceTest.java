@@ -36,27 +36,35 @@ class BookServiceTest {
                 "J.R.R. Tolkien",
                 "978-3-86680-192-9",
                 "Ein episches Fantasy-Abenteuer",
-                LocalDate.of(1954, 7, 29));
+                LocalDate.of(1954, 7, 29),
+                "",
+                "");
 
         this.book2 = new Book("2",
                 "1984",
                 "George Orwell",
                 "978-0-452-28423-4",
                 "Dystopischer Klassiker",
-                LocalDate.of(1949, 6, 8));
+                LocalDate.of(1949, 6, 8),
+                "",
+                "");
 
         this.book3 = new Book("3",
                 "Die unendliche Geschichte",
                 "Michael Ende",
                 "978-3-522-20260-2",
                 "Ein phantastisches Abenteuer in der Welt Phantásien",
-                LocalDate.of(1979, 9, 1));
+                LocalDate.of(1979, 9, 1),
+                "",
+                "");
 
         this.bookDTO3 = new BookDTO("Die unendliche Geschichte",
                 "Michael Ende",
                 "978-3-522-20260-2",
                 "Ein phantastisches Abenteuer in der Welt Phantásien",
-                LocalDate.of(1979, 9, 1));
+                LocalDate.of(1979, 9, 1),
+                "",
+                "");
     }
 
     @Test

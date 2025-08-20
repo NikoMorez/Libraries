@@ -35,14 +35,18 @@ class ApiControllerTest {
                 "J.R.R. Tolkien",
                 "978-3-86680-192-9",
                 "Ein episches Fantasy-Abenteuer",
-                LocalDate.of(1954, 7, 29));
+                LocalDate.of(1954, 7, 29),
+                "",
+                "");
 
         Book book2 = new Book("2",
                 "1984",
                 "George Orwell",
                 "978-0-452-28423-4",
                 "Dystopischer Klassiker",
-                LocalDate.of(1949, 6, 8));
+                LocalDate.of(1949, 6, 8),
+                "",
+                "");
 
         bookRepo.save(book1);
         bookRepo.save(book2);
@@ -134,5 +138,33 @@ class ApiControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void testSearchGoogleBooks_returnsListOfBooks() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/search?query=myrie_zange_symmetrie_schneeflocken"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                  [
+                      {
+                          "title": "Myrie Zange",
+                          "author": "M. Skalabyrinth",
+                          "isbn": "9789403740478",
+                          "description": "",
+                          "publicationDate": "2024-04-25",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
+                      },
+                      {
+                          "title": "Die Symmetrie der Schneeflocken",
+                          "author": "Karla Byrinth",
+                          "isbn": "",
+                          "description": "",
+                          "publicationDate": "2019-01-01",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
+                      }
+                  ]
+                  """));
     }
 }
