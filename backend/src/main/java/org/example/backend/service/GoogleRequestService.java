@@ -12,10 +12,12 @@ import java.util.List;
 public class GoogleRequestService {
 
     private final RestClient restClient;
+    private final IdService idService;
 
-    public GoogleRequestService(RestClient.Builder restClientBuilder) {
+    public GoogleRequestService(RestClient.Builder restClientBuilder, IdService idService) {
         this.restClient = restClientBuilder
                 .baseUrl("https://www.googleapis.com/books/v1/volumes").build();
+        this.idService = idService;
     }
 
     public List<Book> searchGoogleBooks(String query) {
@@ -23,7 +25,6 @@ public class GoogleRequestService {
         List<GoogleItem> entries = new ArrayList<>();
         if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
         List<Book> books = new ArrayList<>();
-        int idCount = 1;
         for (GoogleItem item : entries) {
             String isbn13 = "";
             if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
@@ -43,7 +44,7 @@ public class GoogleRequestService {
                 }
             }catch (Exception ignored){}
             books.add(new Book(
-                    String.valueOf(idCount++),
+                    idService.randomId(),
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
                     item.volumeInfo() != null && item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() && item.volumeInfo().authors().getFirst() != null ? item.volumeInfo().authors().getFirst() : "",
                     isbn13,
