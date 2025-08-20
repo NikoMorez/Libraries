@@ -34,15 +34,7 @@ public class GoogleRequestService {
                     }
                 }
             }
-            LocalDate publicationDate = LocalDate.of(0,1,1);
-            try {
-                if(item.volumeInfo().publishedDate().length() == 10) {
-                    publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
-                }else if(item.volumeInfo().publishedDate().length() == 4){
-                    int year = Integer.parseInt(item.volumeInfo().publishedDate());
-                    publicationDate = LocalDate.of(year,1,1);
-                }
-            }catch (Exception ignored){}
+            LocalDate publicationDate = getLocalDate(item);
             books.add(new Book(
                     idService.randomId(),
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
@@ -55,5 +47,18 @@ public class GoogleRequestService {
             ));
         }
         return books;
+    }
+
+    private static LocalDate getLocalDate(GoogleItem item) {
+        LocalDate publicationDate = LocalDate.of(0,1,1);
+        try {
+            if(item.volumeInfo().publishedDate().length() == 10) {
+                publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
+            }else if(item.volumeInfo().publishedDate().length() == 4){
+                int year = Integer.parseInt(item.volumeInfo().publishedDate());
+                publicationDate = LocalDate.of(year,1,1);
+            }
+        }catch (Exception ignored){}
+        return publicationDate;
     }
 }
