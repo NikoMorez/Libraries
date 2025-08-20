@@ -10,7 +10,9 @@ public record BookDTO(
         String author,
         String isbn,
         String description,
-        LocalDate publicationDate
+        LocalDate publicationDate,
+        String smallThumbnail,
+        String thumbnail
 ) {
 
 }
