@@ -3,6 +3,7 @@ import {Rating} from "@mui/material";
 import {Link} from "react-router-dom";
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 
@@ -34,6 +35,9 @@ export default function BookComponent( Book : {item:Book} ) {
                 <div className="flex justify-end space-x-2 mt-4">
                     <Link to={`/Books/${Book.item.id}` } className="cursor-pointer">
                         <ManageSearchIcon />
+                    </Link>
+                    <Link to={`books/${Book.item.id}/edit`} className="cursor-pointer">
+                        <EditIcon className="cursor-pointer"/>
                     </Link>
                     <Link to={""}  className="cursor-pointer">
                         <FavoriteIcon className="cursor-pointer"/>
