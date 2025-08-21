@@ -20,7 +20,10 @@ function App() {
     }
 
     function logout() {
-        console.log("Logout");
+        const host:string = window.location.host === "localhost:5173"
+            ? "http://localhost:8080"
+            : window.location.origin;
+        window.open(host + "/logout", "self")
     }
 
     const loadUser = () => {
