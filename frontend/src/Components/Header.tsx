@@ -1,4 +1,6 @@
 import {Link} from "react-router-dom";
+import axios from "axios";
+import {useEffect} from "react";
 export default function Header() {
 
     function login() {
@@ -7,6 +9,15 @@ export default function Header() {
             : window.location.origin;
         window.open(host + "/oauth2/authorization/github", "self")
     }
+
+    const loadUser = () => {
+        axios.get("/api/auth/me")
+            .then((response) => {console.log(response.data)})
+    }
+
+    useEffect(() => {
+        loadUser()
+    }, []);
 
     return(
         <>
