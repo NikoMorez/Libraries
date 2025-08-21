@@ -13,11 +13,11 @@ export default function Header() {
 
                 <nav className="bg-gray-700 border-t border-gray-600 shadow-lg shadow-gray-800 dark:shadow-gray-900   mb-8">
                     <div className="container mx-10 flex space-x-8 px-6">
-                        <Link to={""}
+                        <Link to={"/"}
                               className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
                             Bücher
                         </Link>
-                        <Link to={""}
+                        <Link to={"/books/add"}
                               className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
                             Bücher hinzufügen
                         </Link>

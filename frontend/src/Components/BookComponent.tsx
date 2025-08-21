@@ -32,7 +32,7 @@ export default function BookComponent( Book : {item:Book} ) {
                     <Rating name="half-rating" defaultValue={0.5} precision={0.5} />
                 </div>
                 <div className="flex justify-end space-x-2 mt-4">
-                    <Link to={`/Books/${Book.item.id}` } className="cursor-pointer">
+                    <Link to={`/books/${Book.item.id}` } className="cursor-pointer">
                         <ManageSearchIcon />
                     </Link>
                     <Link to={""}  className="cursor-pointer">

@@ -3,6 +3,7 @@ import Books from "./Pages/Books.tsx";
 import {Route, Routes} from "react-router-dom";
 import Header from "./Components/Header.tsx";
 import BookDetailPage from "./Pages/BookDetailPage.tsx";
+import AddBookPage from "./Pages/AddBookPage.tsx";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
           <Routes>
               <Route path={""} element={<Books></Books>}/>
               <Route path="/books/:id" element={<BookDetailPage />} />
+              <Route path="/books/add" element={<AddBookPage/>}/>
           </Routes>
 
 

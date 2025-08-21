@@ -1,9 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.model.BookDTO;
-import org.example.backend.model.GoogleIndustryIdentifier;
-import org.example.backend.model.GoogleItem;
-import org.example.backend.model.GoogleResponse;
+import org.example.backend.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -15,17 +12,19 @@ import java.util.List;
 public class GoogleRequestService {
 
     private final RestClient restClient;
+    private final IdService idService;
 
-    public GoogleRequestService(RestClient.Builder restClientBuilder) {
+    public GoogleRequestService(RestClient.Builder restClientBuilder, IdService idService) {
         this.restClient = restClientBuilder
                 .baseUrl("https://www.googleapis.com/books/v1/volumes").build();
+        this.idService = idService;
     }
 
-    public List<BookDTO> searchGoogleBooks(String query) {
+    public List<Book> searchGoogleBooks(String query) {
         GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
         List<GoogleItem> entries = new ArrayList<>();
         if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
-        List<BookDTO> books = new ArrayList<>();
+        List<Book> books = new ArrayList<>();
         for (GoogleItem item : entries) {
             String isbn13 = "";
             if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
@@ -35,16 +34,9 @@ public class GoogleRequestService {
                     }
                 }
             }
-            LocalDate publicationDate = LocalDate.of(0,1,1);
-            try {
-                if(item.volumeInfo().publishedDate().length() == 10) {
-                    publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
-                }else if(item.volumeInfo().publishedDate().length() == 4){
-                    int year = Integer.parseInt(item.volumeInfo().publishedDate());
-                    publicationDate = LocalDate.of(year,1,1);
-                }
-            }catch (Exception ignored){}
-            books.add(new BookDTO(
+            LocalDate publicationDate = getLocalDate(item);
+            books.add(new Book(
+                    idService.randomId(),
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
                     item.volumeInfo() != null && item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() && item.volumeInfo().authors().getFirst() != null ? item.volumeInfo().authors().getFirst() : "",
                     isbn13,
@@ -55,5 +47,18 @@ public class GoogleRequestService {
             ));
         }
         return books;
+    }
+
+    private static LocalDate getLocalDate(GoogleItem item) {
+        LocalDate publicationDate = LocalDate.of(0,1,1);
+        try {
+            if(item.volumeInfo().publishedDate().length() == 10) {
+                publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
+            }else if(item.volumeInfo().publishedDate().length() == 4){
+                int year = Integer.parseInt(item.volumeInfo().publishedDate());
+                publicationDate = LocalDate.of(year,1,1);
+            }
+        }catch (Exception ignored){}
+        return publicationDate;
     }
 }
