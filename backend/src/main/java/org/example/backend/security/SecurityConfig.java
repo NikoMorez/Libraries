@@ -10,12 +10,13 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@SuppressWarnings("java:S4502") // CSRF absichtlich deaktiviert
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // NOSONAR java:S4502 - bewusst deaktiviert
                 .authorizeHttpRequests(a -> a
                         .requestMatchers( HttpMethod.GET,"/api/example").authenticated()
                         .anyRequest().permitAll())
