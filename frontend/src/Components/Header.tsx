@@ -1,23 +1,14 @@
 import {Link} from "react-router-dom";
-import axios from "axios";
-import {useEffect} from "react";
-export default function Header() {
 
-    function login() {
-        const host:string = window.location.host === "localhost:5173"
-            ? "http://localhost:8080"
-            : window.location.origin;
-        window.open(host + "/oauth2/authorization/github", "self")
-    }
-
-    const loadUser = () => {
-        axios.get("/api/auth/me")
-            .then((response) => {console.log(response.data)})
-    }
-
-    useEffect(() => {
-        loadUser()
-    }, []);
+export default function Header({
+                                   user,
+                                   onLogin,
+                                   onLogout,
+                               }: {
+    user: string | null | undefined;
+    onLogin: () => void;
+    onLogout: () => void;
+}) {
 
     return(
         <>
@@ -40,12 +31,22 @@ export default function Header() {
                             Bücher hinzufügen
                         </Link>
 
-                        <button
-                            onClick={login}
-                            className="ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
-                        >
-                            Login
-                        </button>
+                        {user ? (
+                            <button
+                                onClick={onLogout}
+                                className="ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <button
+                                onClick={onLogin}
+                                className="ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
+                            >
+                                Login
+                            </button>
+                        )}
+
                     </div>
                 </nav>
 
