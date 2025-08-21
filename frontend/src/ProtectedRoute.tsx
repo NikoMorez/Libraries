@@ -7,10 +7,10 @@ type ProtectedRouteProps = {
 export default function ProtectedRoute(props:Readonly<ProtectedRouteProps>) {
 
     if (props.user === undefined) {
-        <h3>loading</h3>
+        return <h3>loading</h3>;
     }
 
     return(
-        props.user ? <Outlet/> : <Navigate to={""}/>
+        props.user ? <Outlet/> : <Navigate to={"/"}/>
     )
 }

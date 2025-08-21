@@ -1,14 +1,12 @@
 import {Link} from "react-router-dom";
 
-export default function Header({
-                                   user,
-                                   onLogin,
-                                   onLogout,
-                               }: {
+type HeaderProps = Readonly<{
     user: string | null | undefined;
-    onLogin: () => void;
     onLogout: () => void;
-}) {
+    onLogin: () => void;
+}>;
+
+export default function Header({ user, onLogout, onLogin }: HeaderProps) {
 
     return(
         <>
