@@ -34,14 +34,14 @@ export default function Header({
                         {user ? (
                             <button
                                 onClick={onLogout}
-                                className="ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
+                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-800 border dark:text-gray-200 border-gray-500 rounded-md hover:bg-gray-600 transition"
                             >
                                 Logout
                             </button>
                         ) : (
                             <button
                                 onClick={onLogin}
-                                className="ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
+                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-800 dark:text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
                             >
                                 Login
                             </button>
