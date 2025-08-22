@@ -23,7 +23,7 @@ public class GoogleRequestService {
     public List<Book> searchGoogleBooks(String query) {
         GoogleResponse response = restClient.get().uri("?q="+query).retrieve().body(GoogleResponse.class);
         List<GoogleItem> entries = new ArrayList<>();
-        if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
+        if (response != null && response.items() != null) {response.items().stream().limit(12).forEach(entries::add);}
         List<Book> books = new ArrayList<>();
         for (GoogleItem item : entries) {
             String isbn13 = getIsbn13(item);
