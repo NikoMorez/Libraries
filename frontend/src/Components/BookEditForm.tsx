@@ -53,6 +53,10 @@ export default function BookEditForm({book}: {book: Book}) {
             "& .MuiOutlinedInput-root.Mui-focused": {
                 boxShadow: "none",
             },
+            "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgb(243 244 246)", // stone-100
+                borderWidth: "2px",
+            },
         },
     };
 
@@ -86,6 +90,21 @@ export default function BookEditForm({book}: {book: Book}) {
             },
         },
     };
+    const imgBoxSx = {
+        mt: 1,
+        borderRadius: 2,
+        overflow: "hidden",
+        height: 140,
+        backgroundColor: "rgba(0,0,0,0.05)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "1px dashed rgba(0,0,0,0.2)",
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "rgba(255,255,255,0.03)",
+            border: "1px dashed rgba(255,255,255,0.2)",
+        },
+    }
 
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -157,18 +176,58 @@ export default function BookEditForm({book}: {book: Book}) {
                     label="Kleines Cover (URL)"
                     type="url"
                     value={smallCover}
-                    onChange={(e) => setSmallCover(e.target.value)}
+                    onChange={(e) => {
+                        setSmallCover(e.target.value);
+                    }}
                     fullWidth
+                    placeholder="https://…"
                     sx={textFieldSx}
                 />
+
+                <Box
+                    sx={imgBoxSx}
+                >
+                    <img
+                        src={smallCover}
+                        alt="Vorschau kleines Cover"
+                        style={{
+                            maxHeight: "100%",
+                            maxWidth: "100%",
+                            objectFit: "contain",
+                            display: "block",
+                        }}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                    />
+                </Box>
                 <TextField
                     label="Großes Cover (URL)"
                     type="url"
                     value={largeCover}
-                    onChange={(e) => setLargeCover(e.target.value)}
+                    onChange={(e) => {
+                        setLargeCover(e.target.value);
+                    }}
                     fullWidth
+                    placeholder="https://…"
                     sx={textFieldSx}
                 />
+
+                <Box
+                    sx={imgBoxSx}
+                >
+                        <img
+                            src={largeCover}
+                            alt="Vorschau großes Cover"
+                            style={{
+                                maxHeight: "100%",
+                                maxWidth: "100%",
+                                objectFit: "contain",
+                                display: "block",
+                            }}
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                        />
+                </Box>
                 <TextField
                     label="Beschreibung"
                     value={description}
