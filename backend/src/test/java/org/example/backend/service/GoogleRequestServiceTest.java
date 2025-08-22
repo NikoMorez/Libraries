@@ -38,7 +38,8 @@ class GoogleRequestServiceTest {
                                     "volumeInfo": {
                                         "title": "Geschichte der Konsumgesellschaft",
                                         "authors": [
-                                            "Wolfgang König"
+                                            "Wolfgang König",
+                                            "Max Mustermann"
                                         ],
                                         "publishedDate": "2000",
                                         "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
@@ -61,7 +62,7 @@ class GoogleRequestServiceTest {
                 .andExpect(MockMvcResultMatchers.content().json("""
                         [{
                           "title": "Geschichte der Konsumgesellschaft",
-                          "author": "Wolfgang König",
+                          "author": "Wolfgang König, Max Mustermann",
                           "isbn": "9783515076500",
                           "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
                           "publicationDate": "2000-01-01",
