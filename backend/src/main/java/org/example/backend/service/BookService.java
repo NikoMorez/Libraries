@@ -31,7 +31,7 @@ public class BookService {
         String newId = idService.randomId();
         return bookRepo.save(new Book(
                 newId, book.title(), book.author(), book.isbn(), book.description(), book.publicationDate(),
-                book.smallThumbnail(), book.thumbnail()
+                book.smallThumbnail(), book.thumbnail(), book.categories()
         ));
     }
 
@@ -45,7 +45,8 @@ public class BookService {
                     bookDto.description(),
                     bookDto.publicationDate(),
                     bookDto.smallThumbnail(),
-                    bookDto.thumbnail()
+                    bookDto.thumbnail(),
+                    bookDto.categories()
             );
             return bookRepo.save(updated);
         });

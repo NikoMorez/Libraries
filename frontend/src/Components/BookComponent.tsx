@@ -16,7 +16,11 @@ export default function BookComponent( Book : {item:Book} ) {
                     <h2 className="text-xl font-bold cardsTextColor mb-2">{Book.item.title}</h2>
 
                     <p className="cardsTextColor">
-                        <span className="font-semibold">Autor:</span> {Book.item.author}
+                        <span className="font-semibold">Verfassende:</span> {Book.item.author}
+                    </p>
+
+                    <p className="cardsTextColor">
+                        <span className="font-semibold">Kategorien:</span> {Book.item.categories}
                     </p>
 
                     <p className="cardsTextColor">
