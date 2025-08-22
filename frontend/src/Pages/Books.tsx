@@ -5,7 +5,7 @@ type bookloadProp = {
     books : Book[]
 }
 
-export default function Books({books} : bookloadProp) {
+export default function Books({books} : Readonly<bookloadProp>) {
 
 
     return (

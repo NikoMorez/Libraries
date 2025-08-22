@@ -17,7 +17,7 @@ export default function ModalQuestion({isOpen, onClose, onSubmit,
                                           bgColor = "bg-gray-400",
                                           textColor = "text-white",
                                           buttonTrueColor = "deleteColor",
-                                      }: ModalProps) {
+                                      }: Readonly<ModalProps>) {
 
     if (!isOpen) return null;
 

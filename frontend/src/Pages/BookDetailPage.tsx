@@ -11,10 +11,10 @@ type loadBooks = {
     onDelete: () => void;
 };
 
-export default function BookDetailPage({onDelete} : loadBooks) {
+export default function BookDetailPage({onDelete} : Readonly<loadBooks>) {
     const {id} = useParams<{ id: string }>();
     const [Book, setBook] = useState<Book | null>(null);
-    const [modalOpen, setIsModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,9 +52,9 @@ export default function BookDetailPage({onDelete} : loadBooks) {
 
     return (
         <div className="cardsBackGroundColor cardsShadowBorder max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
-            <BookDetail key={Book.id} BookItem={Book} handleDelete={() => setIsModalOpen(true)}  />
+            <BookDetail key={Book.id} BookItem={Book} handleDelete={() => setModalOpen(true)}  />
 
-            <ModalQuestion isOpen={modalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleDelete}
+            <ModalQuestion isOpen={modalOpen} onClose={() => setModalOpen(false)} onSubmit={handleDelete}
                            modalTitle={"Buch löschen"}
                            modalDescription={"Willst du dieses Buch wirklich löschen?"}
                            bgColor={"bg-amber-600"}

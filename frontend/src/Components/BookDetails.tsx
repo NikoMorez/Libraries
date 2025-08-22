@@ -9,7 +9,7 @@ type BookDetailProps = {
     handleDelete: () => void;
 };
 
-export default function BookDetail({BookItem,handleDelete} : BookDetailProps) {
+export default function BookDetail({BookItem,handleDelete} : Readonly<BookDetailProps>) {
 
     return (
        <>
