@@ -26,27 +26,34 @@ public class GoogleRequestService {
         if (response != null && response.items() != null) {response.items().stream().limit(10).forEach(entries::add);}
         List<Book> books = new ArrayList<>();
         for (GoogleItem item : entries) {
-            String isbn13 = "";
-            if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
-                for (GoogleIndustryIdentifier identifier : item.volumeInfo().industryIdentifiers()) {
-                    if (identifier.type().equals("ISBN_13")) {
-                        isbn13 = identifier.identifier();
-                    }
-                }
-            }
+            String isbn13 = getIsbn13(item);
             LocalDate publicationDate = getLocalDate(item);
+            String authors = getAuthors(item);
             books.add(new Book(
                     idService.randomId(),
                     item.volumeInfo() != null && item.volumeInfo().title() != null ? item.volumeInfo().title() : "",
-                    item.volumeInfo() != null && item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() && item.volumeInfo().authors().getFirst() != null ? item.volumeInfo().authors().getFirst() : "",
+                    authors,
                     isbn13,
                     item.volumeInfo() != null && item.volumeInfo().description() != null ? item.volumeInfo().description() : "",
                     publicationDate,
                     item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().smallThumbnail() != null ? item.volumeInfo().imageLinks().smallThumbnail() : "",
-                    item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().thumbnail() != null ? item.volumeInfo().imageLinks().thumbnail() : ""
+                    item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().thumbnail() != null ? item.volumeInfo().imageLinks().thumbnail() : "",
+                    item.volumeInfo() != null && item.volumeInfo().categories() != null ? item.volumeInfo().categories() : new ArrayList<>()
             ));
         }
         return books;
+    }
+
+    private static String getIsbn13(GoogleItem item) {
+        String isbn13 = "";
+        if (item.volumeInfo() != null && item.volumeInfo().industryIdentifiers() != null) {
+            for (GoogleIndustryIdentifier identifier : item.volumeInfo().industryIdentifiers()) {
+                if (identifier.type().equals("ISBN_13")) {
+                    isbn13 = identifier.identifier();
+                }
+            }
+        }
+        return isbn13;
     }
 
     private static LocalDate getLocalDate(GoogleItem item) {
@@ -60,5 +67,12 @@ public class GoogleRequestService {
             }
         }catch (Exception ignored){}
         return publicationDate;
+    }
+
+    private static String getAuthors(GoogleItem item) {
+        if (item.volumeInfo() != null && item.volumeInfo().authors() != null) {
+            return String.join(", ", item.volumeInfo().authors());
+        }
+        return "";
     }
 }
