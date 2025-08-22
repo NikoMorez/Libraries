@@ -11,10 +11,82 @@ export default function BookEditForm({book}: {book: Book}) {
     const [author, setAuthor] = useState(book.author);
     const [isbn, setIsbn] = useState(book.isbn);
     const [description, setDescription] = useState(book.description);
-    const [smallCover, setSmallCover] = useState(book.smallCover);
-    const [largeCover, setLargeCover] = useState(book.largeCover);
+    const [smallCover, setSmallCover] = useState(book.smallThumbnail);
+    const [largeCover, setLargeCover] = useState(book.thumbnail);
     const [publicationDate, setPublicationDate] = useState(book.publicationDate);
     const [saving, setSaving] = useState(false);
+    const textFieldSx = {
+        "& .MuiInputBase-root": {
+            borderRadius: "0.75rem",
+        },
+        "& .MuiInputLabel-root": {
+            transition: "color 120ms ease, transform 120ms ease",
+        },
+
+        "@media (prefers-color-scheme: dark)": {
+            "& .MuiInputLabel-root": {
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                color: "rgb(214 211 209)", // stone-300
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+                color: "rgb(250 250 249)", // stone-50
+            },
+
+            "& .MuiInputBase-root": {
+                color: "rgb(214 211 209)",
+                backgroundColor: "rgb(68 64 60)",// bg-stone-700
+            },
+
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgb(168 162 158)", // stone-400
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgb(243 244 246)", // stone-100
+                borderWidth: "2px",
+            },
+            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgb(250 250 249)", // stone-50
+                borderWidth: "2.5px",
+            },
+
+            "& .MuiOutlinedInput-root.Mui-focused": {
+                boxShadow: "none",
+            },
+        },
+    };
+
+    const buttonSx = {
+        borderRadius: "8px",
+        border: "1px solid transparent",
+        padding: "0.6em 1.2em",
+        fontSize: "1em",
+        fontWeight: 500,
+        fontFamily: "inherit",
+        cursor: "pointer",
+        textTransform: "none",
+        transition: "border-color 0.25s, background-color 0.25s",
+
+        backgroundColor: "rgb(30 41 59)",   // slate-800
+        color: "rgb(250 250 249)",          // stone-50
+        "&:hover": {
+            borderColor: "rgb(51 65 85)",     // slate-700
+            backgroundColor: "rgb(51 65 85)", // slate-700
+        },
+        "&.Mui-focused": {
+            borderColor: "rgb(250 250 249)",  // stone-50
+        },
+
+        "@media (prefers-color-scheme: dark)": {
+            backgroundColor: "rgb(38 38 38)",   // neutral-800
+            color: "rgb(245 245 244)",          // zinc-100
+            "&:hover": {
+                borderColor: "rgb(250 250 249)",  // stone-50
+                backgroundColor: "rgb(64 64 64)", // neutral-700
+            },
+        },
+    };
+
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -56,6 +128,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     onChange={(e) => setTitle(e.target.value)}
                     required
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="Autor"
@@ -63,12 +136,14 @@ export default function BookEditForm({book}: {book: Book}) {
                     onChange={(e) => setAuthor(e.target.value)}
                     required
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="ISBN"
                     value={isbn}
                     onChange={(e) => setIsbn(e.target.value)}
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="Veröffentlichungsdatum"
@@ -76,6 +151,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     value={publicationDate}
                     onChange={(e) => setPublicationDate(e.target.value)}
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="Kleines Cover (URL)"
@@ -83,6 +159,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     value={smallCover}
                     onChange={(e) => setSmallCover(e.target.value)}
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="Großes Cover (URL)"
@@ -90,6 +167,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     value={largeCover}
                     onChange={(e) => setLargeCover(e.target.value)}
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <TextField
                     label="Beschreibung"
@@ -98,12 +176,13 @@ export default function BookEditForm({book}: {book: Book}) {
                     multiline
                     minRows={4}
                     fullWidth
+                    sx={textFieldSx}
                 />
                 <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-                    <Button type="button" variant="text" onClick={() => navigate(-1)} disabled={saving}>
+                    <Button type="button" variant="text" onClick={() => navigate(-1)} disabled={saving} sx={buttonSx}>
                         Abbrechen
                     </Button>
-                    <Button type="submit" variant="contained" disabled={saving}>
+                    <Button type="submit" variant="contained" disabled={saving} sx={buttonSx}>
                         {saving ? "Speichern…" : "Speichern"}
                     </Button>
                 </Box>
