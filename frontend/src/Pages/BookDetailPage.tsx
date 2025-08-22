@@ -2,12 +2,20 @@ import {useEffect, useState} from "react";
 import type {Book} from "../models/Book.tsx";
 import axios from "axios";
 
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import BookDetail from "../Components/BookDetails.tsx";
+import ModalQuestion from "../Components/ModalQuestion.tsx";
 
-export default function BookDetailPage() {
+
+type loadBooks = {
+    onDelete: () => void;
+};
+
+export default function BookDetailPage({onDelete} : loadBooks) {
     const {id} = useParams<{ id: string }>();
     const [Book, setBook] = useState<Book | null>(null);
+    const [modalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (id) {
@@ -30,10 +38,30 @@ export default function BookDetailPage() {
         );
     }
 
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`/api/books/${id}`);
+            onDelete();
+            navigate("/");
+        } catch (error) {
+            console.error("Fehler beim Löschen:", error);
+        }
+    };
+
+
 
     return (
         <div className="cardsBackGroundColor cardsShadowBorder max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
-            <BookDetail key={Book.id} BookItem={Book}/>
+            <BookDetail key={Book.id} BookItem={Book} handleDelete={() => setIsModalOpen(true)}  />
+
+            <ModalQuestion isOpen={modalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleDelete}
+                           modalTitle={"Buch löschen"}
+                           modalDescription={"Willst du dieses Buch wirklich löschen?"}
+                           bgColor={"bg-amber-600"}
+                           buttonTrueColor={"deleteColor"}
+                           buttonTrueText={"Löschen"}
+            ></ModalQuestion>
+
         </div>
     );
 }
