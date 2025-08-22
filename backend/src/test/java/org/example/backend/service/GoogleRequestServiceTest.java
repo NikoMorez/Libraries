@@ -123,4 +123,29 @@ class GoogleRequestServiceTest {
                         }]"""
                 ));
     }
+
+    @Test
+    void searchGoogleBooks_shouldReturnEmptyStringsAndNulls_whenGoogleVolumeInfoMissing() throws Exception {
+        mockServer.expect(requestTo("https://www.googleapis.com/books/v1/volumes?q=Banane"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                        {
+                            "items": [
+                                {
+                                }
+                            ]
+                        }""", MediaType.APPLICATION_JSON));
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/books/search?query=Banane"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [{
+                          "title": "",
+                          "author": "",
+                          "isbn": "",
+                          "description": "",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
+                        }]"""
+                ));
+    }
 }
