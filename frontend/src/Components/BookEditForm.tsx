@@ -10,6 +10,9 @@ export default function BookEditForm({book}: {book: Book}) {
     const navigate = useNavigate();
     const [title, setTitle] = useState(book.title);
     const [author, setAuthor] = useState(book.author);
+    const [categoriesText, setCategoriesText] = useState<string>(
+        (book.categories ?? []).join(", ")
+    )
     const [isbn, setIsbn] = useState(book.isbn);
     const [description, setDescription] = useState(book.description);
     const [smallCover, setSmallCover] = useState(book.smallThumbnail);
@@ -18,6 +21,13 @@ export default function BookEditForm({book}: {book: Book}) {
     const [saving, setSaving] = useState(false);
     const [smallCoverError, setSmallCoverError] = useState(false);
     const [largeCoverError, setLargeCoverError] = useState(false);
+
+    function parseCategories(input: string): string[] {
+        return input
+            .split(",")
+            .map(s => s.trim())
+            .filter(Boolean);
+    }
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -31,6 +41,7 @@ export default function BookEditForm({book}: {book: Book}) {
                 smallThumbnail: smallCover,
                 thumbnail: largeCover,
                 publicationDate,
+                categories: parseCategories(categoriesText),
             });
             navigate(`/books/${book.id}`);
         } finally {
@@ -68,6 +79,24 @@ export default function BookEditForm({book}: {book: Book}) {
                     required
                     fullWidth
                     sx={textFieldSx}
+                />
+                <TextField
+                    label="Beschreibung"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    multiline
+                    minRows={4}
+                    fullWidth
+                    sx={textFieldSx}
+                />
+                <TextField
+                    label="Kategorien"
+                    value={categoriesText}
+                    onChange={(e) => setCategoriesText(e.target.value)}
+                    fullWidth
+                    placeholder="Fantasy, Sci-Fi, Klassiker"
+                    sx={textFieldSx}
+                    helperText="Mehrere Kategorien mit Komma trennen"
                 />
                 <TextField
                     label="ISBN"
@@ -156,15 +185,6 @@ export default function BookEditForm({book}: {book: Book}) {
                         </Box>
                     ) : null}
                 </Box>
-                <TextField
-                    label="Beschreibung"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    multiline
-                    minRows={4}
-                    fullWidth
-                    sx={textFieldSx}
-                />
                 <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
                     <Button type="button" variant="text" onClick={() => navigate(-1)} disabled={saving} sx={buttonSx}>
                         Abbrechen

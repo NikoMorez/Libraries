@@ -7,6 +7,11 @@ export const textFieldSx: SxProps<Theme> = {
     "& .MuiInputLabel-root": {
         transition: "color 120ms ease, transform 120ms ease",
     },
+    "& .MuiFormHelperText-root": {
+        color: "rgb(24 24 27)", // Light Mode: text-zinc-900
+        fontSize: "0.8rem",
+        fontStyle: "italic",
+    },
 
     "@media (prefers-color-scheme: dark)": {
         "& .MuiInputLabel-root": {
@@ -41,6 +46,11 @@ export const textFieldSx: SxProps<Theme> = {
         "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: "rgb(243 244 246)", // stone-100
             borderWidth: "2px",
+        },
+        "& .MuiFormHelperText-root": {
+            color: "rgb(214 211 209)", // Dark Mode: stone-300
+            fontSize: "0.8rem",
+            fontStyle: "italic",
         },
     },
 };
