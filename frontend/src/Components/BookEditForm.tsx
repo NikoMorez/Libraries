@@ -28,8 +28,8 @@ export default function BookEditForm({book}: {book: Book}) {
                 author,
                 isbn,
                 description,
-                smallCover,
-                largeCover,
+                smallThumbnail: smallCover,
+                thumbnail: largeCover,
                 publicationDate,
             });
             navigate(`/books/${book.id}`);
