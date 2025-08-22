@@ -16,6 +16,8 @@ export default function BookEditForm({book}: {book: Book}) {
     const [largeCover, setLargeCover] = useState(book.thumbnail);
     const [publicationDate, setPublicationDate] = useState(book.publicationDate);
     const [saving, setSaving] = useState(false);
+    const [smallCoverError, setSmallCoverError] = useState(false);
+    const [largeCoverError, setLargeCoverError] = useState(false);
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -88,6 +90,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     value={smallCover}
                     onChange={(e) => {
                         setSmallCover(e.target.value);
+                        setSmallCoverError(false);
                     }}
                     fullWidth
                     placeholder="https://…"
@@ -97,18 +100,25 @@ export default function BookEditForm({book}: {book: Book}) {
                 <Box
                     sx={imgBoxSx}
                 >
-                    <img
-                        src={smallCover}
-                        alt="Vorschau kleines Cover"
-                        style={{
-                            maxHeight: "100%",
-                            maxWidth: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                        }}
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                    />
+                    {smallCover && !smallCoverError ?(
+                        <img
+                            src={smallCover}
+                            alt="Vorschau kleines Cover"
+                            style={{
+                                maxHeight: "100%",
+                                maxWidth: "100%",
+                                objectFit: "contain",
+                                display: "block",
+                            }}
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            onError={() => setSmallCoverError(true)}
+                        />
+                    ) : smallCoverError ? (
+                        <Box sx={imgBoxSx}>
+                            <span className="text-sm opacity-70">Bild konnte nicht geladen werden</span>
+                        </Box>
+                    ) : null}
                 </Box>
                 <TextField
                     label="Großes Cover (URL)"
@@ -116,6 +126,7 @@ export default function BookEditForm({book}: {book: Book}) {
                     value={largeCover}
                     onChange={(e) => {
                         setLargeCover(e.target.value);
+                        setLargeCoverError(false);
                     }}
                     fullWidth
                     placeholder="https://…"
@@ -125,6 +136,7 @@ export default function BookEditForm({book}: {book: Book}) {
                 <Box
                     sx={imgBoxSx}
                 >
+                    {largeCover && !largeCoverError ?(
                         <img
                             src={largeCover}
                             alt="Vorschau großes Cover"
@@ -136,7 +148,13 @@ export default function BookEditForm({book}: {book: Book}) {
                             }}
                             loading="lazy"
                             referrerPolicy="no-referrer"
+                            onError={() => setLargeCoverError(true)}
                         />
+                    ) : largeCoverError ? (
+                        <Box sx={imgBoxSx}>
+                            <span className="text-sm opacity-70">Bild konnte nicht geladen werden</span>
+                        </Box>
+                    ) : null}
                 </Box>
                 <TextField
                     label="Beschreibung"
