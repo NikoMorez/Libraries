@@ -38,7 +38,8 @@ class GoogleRequestServiceTest {
                                     "volumeInfo": {
                                         "title": "Geschichte der Konsumgesellschaft",
                                         "authors": [
-                                            "Wolfgang König"
+                                            "Wolfgang König",
+                                            "Max Mustermann"
                                         ],
                                         "publishedDate": "2000",
                                         "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
@@ -51,7 +52,10 @@ class GoogleRequestServiceTest {
                                         "imageLinks": {
                                             "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                                             "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                                        }
+                                        },
+                                        "categories": [
+                                            "Business & Economics"
+                                        ]
                                     }
                                 }
                             ]
@@ -61,12 +65,86 @@ class GoogleRequestServiceTest {
                 .andExpect(MockMvcResultMatchers.content().json("""
                         [{
                           "title": "Geschichte der Konsumgesellschaft",
-                          "author": "Wolfgang König",
+                          "author": "Wolfgang König, Max Mustermann",
                           "isbn": "9783515076500",
                           "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
                           "publicationDate": "2000-01-01",
                           "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-                          "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                          "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+                          "categories": [
+                                      "Business & Economics"
+                                  ]
+                        }]"""
+                ));
+    }
+
+    @Test
+    void searchGoogleBooks_shouldReturnEmptyStringsAndNull_whenEntriesAreEmpty() throws Exception {
+        mockServer.expect(requestTo("https://www.googleapis.com/books/v1/volumes?q=Banane"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                        {
+                            "items": [
+                                {
+                                    "volumeInfo": {
+                                        "title": "Geschichte der Konsumgesellschaft",
+                                        "publishedDate": "",
+                                        "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
+                                        "industryIdentifiers": [
+                                            {
+                                                "type": "ISBN_13",
+                                                "identifier": "9783515076500"
+                                            }
+                                        ],
+                                        "imageLinks": {
+                                            "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+                                            "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                                        },
+                                        "categories": [
+                                            "Business & Economics"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }""", MediaType.APPLICATION_JSON));
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/books/search?query=Banane"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [{
+                          "title": "Geschichte der Konsumgesellschaft",
+                          "author": "",
+                          "isbn": "9783515076500",
+                          "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
+                          "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+                          "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+                          "categories": [
+                                      "Business & Economics"
+                                  ]
+                        }]"""
+                ));
+    }
+
+    @Test
+    void searchGoogleBooks_shouldReturnEmptyStringsAndNulls_whenGoogleVolumeInfoMissing() throws Exception {
+        mockServer.expect(requestTo("https://www.googleapis.com/books/v1/volumes?q=Banane"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                        {
+                            "items": [
+                                {
+                                }
+                            ]
+                        }""", MediaType.APPLICATION_JSON));
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/books/search?query=Banane"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [{
+                          "title": "",
+                          "author": "",
+                          "isbn": "",
+                          "description": "",
+                          "smallThumbnail": "",
+                          "thumbnail": ""
                         }]"""
                 ));
     }
