@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,8 @@ class BookServiceTest {
                 "Ein episches Fantasy-Abenteuer",
                 LocalDate.of(1954, 7, 29),
                 "",
-                "");
+                "",
+                new ArrayList<>());
 
         this.book2 = new Book("2",
                 "1984",
@@ -47,7 +49,8 @@ class BookServiceTest {
                 "Dystopischer Klassiker",
                 LocalDate.of(1949, 6, 8),
                 "",
-                "");
+                "",
+                new ArrayList<>());
 
         this.book3 = new Book("3",
                 "Die unendliche Geschichte",
@@ -56,7 +59,8 @@ class BookServiceTest {
                 "Ein phantastisches Abenteuer in der Welt Phantásien",
                 LocalDate.of(1979, 9, 1),
                 "",
-                "");
+                "",
+                new ArrayList<>());
 
         this.bookDTO3 = new BookDTO("Die unendliche Geschichte",
                 "Michael Ende",
@@ -64,7 +68,8 @@ class BookServiceTest {
                 "Ein phantastisches Abenteuer in der Welt Phantásien",
                 LocalDate.of(1979, 9, 1),
                 "",
-                "");
+                "",
+                new ArrayList<>());
     }
 
     @Test
