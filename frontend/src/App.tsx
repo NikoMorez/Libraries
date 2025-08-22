@@ -47,9 +47,8 @@ function App() {
               <Route path="/books/add" element={<AddBookPage/>}/>
 
               <Route element={<ProtectedRoute user={user} />}>
-
+                  <Route path="/books/:id/edit" element={<BookEditPage/>} />
               </Route>
-              <Route path="/books/:id/edit" element={<BookEditPage/>} />
           </Routes>
 
 
