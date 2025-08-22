@@ -57,7 +57,8 @@ public class GoogleRequestService {
     }
 
     private static LocalDate getLocalDate(GoogleItem item) {
-        LocalDate publicationDate = LocalDate.of(0,1,1);
+        // default case, in case there is no date-entry
+        LocalDate publicationDate = null;
         try {
             if(item.volumeInfo().publishedDate().length() == 10) {
                 publicationDate = LocalDate.parse(item.volumeInfo().publishedDate());
@@ -65,6 +66,7 @@ public class GoogleRequestService {
                 int year = Integer.parseInt(item.volumeInfo().publishedDate());
                 publicationDate = LocalDate.of(year,1,1);
             }
+        // Exception ignored, because fallback case is already defined above.
         }catch (Exception ignored){}
         return publicationDate;
     }
