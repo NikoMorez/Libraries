@@ -3,6 +3,7 @@ package org.example.backend.model;
 import lombok.With;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @With
 public record Book(
@@ -13,7 +14,8 @@ public record Book(
         String description,
         LocalDate publicationDate,
         String smallThumbnail,
-        String thumbnail
+        String thumbnail,
+        List<String> categories
 ) {
 
 }
