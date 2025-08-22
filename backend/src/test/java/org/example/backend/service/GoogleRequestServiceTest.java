@@ -52,7 +52,10 @@ class GoogleRequestServiceTest {
                                         "imageLinks": {
                                             "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                                             "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                                        }
+                                        },
+                                        "categories": [
+                                            "Business & Economics"
+                                        ]
                                     }
                                 }
                             ]
@@ -67,7 +70,10 @@ class GoogleRequestServiceTest {
                           "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
                           "publicationDate": "2000-01-01",
                           "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-                          "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                          "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+                          "categories": [
+                                      "Business & Economics"
+                                  ]
                         }]"""
                 ));
     }
