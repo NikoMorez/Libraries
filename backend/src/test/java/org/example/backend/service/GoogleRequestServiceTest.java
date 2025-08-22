@@ -79,7 +79,7 @@ class GoogleRequestServiceTest {
     }
 
     @Test
-    void searchGoogleBooks_shouldEmptyAuthorString_whenNoAuthorEntry() throws Exception {
+    void searchGoogleBooks_shouldReturnEmptyStringsAndNull_whenEntriesAreEmpty() throws Exception {
         mockServer.expect(requestTo("https://www.googleapis.com/books/v1/volumes?q=Banane"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess("""
@@ -88,7 +88,7 @@ class GoogleRequestServiceTest {
                                 {
                                     "volumeInfo": {
                                         "title": "Geschichte der Konsumgesellschaft",
-                                        "publishedDate": "2000",
+                                        "publishedDate": "",
                                         "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
                                         "industryIdentifiers": [
                                             {
@@ -115,7 +115,6 @@ class GoogleRequestServiceTest {
                           "author": "",
                           "isbn": "9783515076500",
                           "description": "Unsere Zeit wird weit mehr durch Konsumtion als durch Produktion geprägt...",
-                          "publicationDate": "2000-01-01",
                           "smallThumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                           "thumbnail": "http://books.google.com/books/content?id=WSoEqc3-xlYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
                           "categories": [
