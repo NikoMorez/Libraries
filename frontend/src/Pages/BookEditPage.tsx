@@ -4,7 +4,11 @@ import axios from "axios";
 import type {Book} from "../models/Book.tsx";
 import BookEditForm from "../Components/BookEditForm.tsx";
 
-export default function BookEditPage() {
+type loadBooks = {
+    onEdit: () => void;
+};
+
+export default function BookEditPage({onEdit} : Readonly<loadBooks>) {
 
     const {id} = useParams<{ id: string }>();
     const [book, setBook] = useState<Book | null>(null);
@@ -32,7 +36,7 @@ export default function BookEditPage() {
 
     return (
         <div className="cardsBackGroundColor cardsShadowBorder max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
-            <BookEditForm key={book.id} book={book}/>
+            <BookEditForm key={book.id} book={book} onEdit={onEdit}/>
         </div>
     );
 }

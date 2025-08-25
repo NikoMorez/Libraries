@@ -5,7 +5,12 @@ import {Box, Stack, TextField, Button} from "@mui/material";
 import axios from "axios";
 import { textFieldSx, imgBoxSx } from "./BookEditForm.styles";
 
-export default function BookEditForm({book}: {book: Book}) {
+type Props = {
+    book: Book;
+    onEdit: () => void;
+};
+
+export default function BookEditForm({ book, onEdit }: Readonly<Props>) {
 
     const navigate = useNavigate();
     const [title, setTitle] = useState(book.title);
@@ -46,6 +51,7 @@ export default function BookEditForm({book}: {book: Book}) {
             navigate(`/books/${book.id}`);
         } finally {
             setSaving(false);
+            onEdit();
         }
     }
 
