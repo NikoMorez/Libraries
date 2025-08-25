@@ -3,7 +3,11 @@ import type {Book} from "../models/Book.tsx";
 import axios from "axios";
 import BookSuggestion from "../Components/BookSuggestion.tsx";
 
-export default function AddBookPage() {
+type loadBooks = {
+    onAddBook: () => void;
+};
+
+export default function AddBookPage({onAddBook} : Readonly<loadBooks>) {
 
     const [books, setBooks] = useState<Book[]>([]);
     const [query, setQuery] = useState("");
@@ -26,7 +30,7 @@ export default function AddBookPage() {
             <button onClick={searchBooks}>Suchen</button>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {books.map((book) => (
-                <BookSuggestion key={book.id} BookItem={book}/>
+                <BookSuggestion key={book.id} Book={{BookItem: book}} onAdd={onAddBook} />
             ))}
             </div>
         </>

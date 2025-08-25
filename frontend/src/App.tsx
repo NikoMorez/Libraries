@@ -61,7 +61,7 @@ function App() {
           <Routes>
               <Route path={""} element={<Books books={books}></Books>}/>
               <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
-              <Route path="/books/add" element={<AddBookPage/>}/>
+              <Route path="/books/add" element={<AddBookPage onAddBook={loadBooks}/>}/>
               <Route element={<ProtectedRoute user={user} />} >
 
               </Route>
