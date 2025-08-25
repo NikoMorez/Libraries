@@ -1,0 +1,72 @@
+import type {SxProps, Theme} from "@mui/material";
+
+export const textFieldSx: SxProps<Theme> = {
+    "& .MuiInputBase-root": {
+        borderRadius: "0.75rem",
+    },
+    "& .MuiInputLabel-root": {
+        transition: "color 120ms ease, transform 120ms ease",
+    },
+    "& .MuiFormHelperText-root": {
+        color: "rgb(24 24 27)", // Light Mode: text-zinc-900
+        fontSize: "0.8rem",
+        fontStyle: "italic",
+    },
+
+    "@media (prefers-color-scheme: dark)": {
+        "& .MuiInputLabel-root": {
+            fontSize: "0.95rem",
+            fontWeight: 600,
+            color: "rgb(214 211 209)", // stone-300
+        },
+        "& .MuiInputLabel-root.Mui-focused": {
+            color: "rgb(250 250 249)", // stone-50
+        },
+
+        "& .MuiInputBase-root": {
+            color: "rgb(214 211 209)",
+            backgroundColor: "rgb(68 64 60)",// bg-stone-700
+        },
+
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(168 162 158)", // stone-400
+        },
+        "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(243 244 246)", // stone-100
+            borderWidth: "2px",
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(250 250 249)", // stone-50
+            borderWidth: "2.5px",
+        },
+
+        "& .MuiOutlinedInput-root.Mui-focused": {
+            boxShadow: "none",
+        },
+        "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(243 244 246)", // stone-100
+            borderWidth: "2px",
+        },
+        "& .MuiFormHelperText-root": {
+            color: "rgb(214 211 209)", // Dark Mode: stone-300
+            fontSize: "0.8rem",
+            fontStyle: "italic",
+        },
+    },
+};
+
+export const imgBoxSx: SxProps<Theme> = {
+    mt: 1,
+    borderRadius: 2,
+    overflow: "hidden",
+    height: 140,
+    backgroundColor: "rgba(0,0,0,0.05)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "1px dashed rgba(0,0,0,0.2)",
+    "@media (prefers-color-scheme: dark)": {
+        backgroundColor: "rgba(255,255,255,0.03)",
+        border: "1px dashed rgba(255,255,255,0.2)",
+    },
+}
