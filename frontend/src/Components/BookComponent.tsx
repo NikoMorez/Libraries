@@ -4,17 +4,32 @@ import {Link} from "react-router-dom";
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditIcon from '@mui/icons-material/Edit';
+import {useState} from "react";
 
 
 
 export default function BookComponent( Book : {item:Book} ) {
 
+    const [smallCoverError, setSmallCoverError] = useState(false);
+
     return (
         <div className="max-w-sm mx-auto my-4">
             <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
+                {Book.item.smallThumbnail && !smallCoverError ?(
+                             <img
+                                 src={Book.item.smallThumbnail}
+                                 className={"mx-auto mb-5"}
+                                 alt="Vorschau kleines Cover"
+                                 height={125}
+                                 width={125}
+                                 loading="lazy"
+                                 referrerPolicy="no-referrer"
+                                 onError={() => setSmallCoverError(true)}
+                             />
+                ) : <div></div>
+                }
                 <Link to={`/Books/${Book.item.id}`} className="cursor-pointer">
                     <h2 className="text-xl font-bold cardsTextColor mb-2">{Book.item.title}</h2>
-
                     <p className="cardsTextColor">
                         <span className="font-semibold">Verfassende:</span> {Book.item.author}
                     </p>
@@ -31,8 +46,14 @@ export default function BookComponent( Book : {item:Book} ) {
                         <span className="font-semibold">Veröffentlicht:</span> {new Date(Book.item.publicationDate).toLocaleDateString("de-DE")}
                     </p>
 
-                    <p className="cardsTextColor mt-3 text-sm">{Book.item.description}</p>
+                    <p className="cardsTextColor mt-3 text-sm">
+                        {Book.item.description.length > 160 ?
+                        Book.item.description.substring(0,160) +"... " :
+                        Book.item.description }
+                    </p>
+
                 </Link>
+
                 <div className="mt-4">
                     <Rating name="half-rating" defaultValue={0.5} precision={0.5} />
                 </div>
