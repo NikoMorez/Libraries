@@ -5,11 +5,29 @@ import Header from "./Components/Header.tsx";
 import BookDetailPage from "./Pages/BookDetailPage.tsx";
 import BookEditPage from "./Pages/BookEditPage.tsx";
 import AddBookPage from "./Pages/AddBookPage.tsx";
+import type {Book} from "./models/Book.tsx";
 import {useEffect, useState} from "react";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import axios from "axios";
 
 function App() {
+
+    const [books, setBooks] = useState<Book[]>([]);
+
+    const loadBooks = async () =>  {
+
+        try {
+            const response = await axios.get("/api/books");
+            setBooks(response.data);
+            console.log(response.data)
+        } catch (error) {
+            console.error("Fehler beim Laden:", error);
+        }
+    }
+
+    useEffect(() => {
+        loadBooks()
+    }, []);
 
     const [user, setUser] = useState<string | undefined | null>(undefined);
 
@@ -37,16 +55,15 @@ function App() {
         loadUser()
     }, []);
 
-  return (
+    return (
       <>
 
           <Header user={user} onLogin={login} onLogout={logout} />
           <Routes>
-              <Route path={""} element={<Books></Books>}/>
-              <Route path="/books/:id" element={<BookDetailPage />} />
+              <Route path={""} element={<Books books={books}></Books>}/>
+              <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
               <Route path="/books/add" element={<AddBookPage/>}/>
-
-              <Route element={<ProtectedRoute user={user} />}>
+              <Route element={<ProtectedRoute user={user} />} >
                   <Route path="/books/:id/edit" element={<BookEditPage/>} />
               </Route>
           </Routes>
