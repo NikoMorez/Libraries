@@ -5,24 +5,24 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 type BookDetailProps = {
-    BookItem: Book;
+    bookItem: Book;
     handleDelete: () => void;
 };
 
-export default function BookDetail({BookItem,handleDelete} : Readonly<BookDetailProps>) {
+export default function BookDetail({bookItem,handleDelete} : Readonly<BookDetailProps>) {
 
     return (
        <>
-            <img src={BookItem.thumbnail} alt={BookItem.title} className="" />
+            <img src={bookItem.thumbnail} alt={bookItem.title} className="" />
 
             <div className="">
                 <div>
-                    <h2 className="cardsTextColor mb-2 text-2xl font-bold ">{BookItem.title}</h2>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {BookItem.author}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {BookItem.categories}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {BookItem.isbn}</p>
-                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {BookItem.publicationDate}</p>
-                    <p className="cardsTextColor">{BookItem.description}</p>
+                    <h2 className="cardsTextColor mb-2 text-2xl font-bold ">{bookItem.title}</h2>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {bookItem.author}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {bookItem.categories}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {bookItem.isbn}</p>
+                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {bookItem.publicationDate}</p>
+                    <p className="cardsTextColor">{bookItem.description}</p>
                 </div>
                 <div className="mt-4">
                     <Rating name="half-rating" defaultValue={0.5} precision={0.5} />

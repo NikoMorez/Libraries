@@ -16,9 +16,9 @@ function App() {
     const loadBooks = async () =>  {
 
         try {
-            const respone = await axios.get("/api/books");
-            setBooks(respone.data);
-            console.log(respone.data)
+            const response = await axios.get("/api/books");
+            setBooks(response.data);
+            console.log(response.data)
         } catch (error) {
             console.error("Fehler beim Laden:", error);
         }
