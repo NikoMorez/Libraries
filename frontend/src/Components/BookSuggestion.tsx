@@ -1,6 +1,7 @@
 import type {Book} from "../models/Book.tsx";
 import type {BookDTO} from "../models/BookDTO.tsx"
 import axios from "axios";
+import {useState} from "react";
 
 type bookSuggestionsProps = {
     Book : {BookItem: Book};
@@ -8,6 +9,8 @@ type bookSuggestionsProps = {
 }
 
 export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
+
+    const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
     function truncateText(text:string, maxLength:number) {
         if (!text) return '';
@@ -30,6 +33,7 @@ export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
                 });
         } finally {
             props.onAdd();
+            setButtonDisabled(true);
         }
     }
 
@@ -45,7 +49,7 @@ export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
                     <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {props.Book.BookItem.isbn}</p>
                     <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {props.Book.BookItem.publicationDate}</p>
                     <p className="cardsTextColor">{truncateText(props.Book.BookItem.description, 200)}</p>
-                    <button onClick={addBookToDB}>Zur Bibliothek hinzufügen</button>
+                    <button onClick={addBookToDB} disabled={buttonDisabled}>{buttonDisabled ? "Bereits in Bibliothek" : "Zur Bibliothek hinzufügen"}</button>
                 </div>
             </div>
             </div>
