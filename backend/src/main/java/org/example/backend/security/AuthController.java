@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @GetMapping("/me")
-    public String getMe(@AuthenticationPrincipal OAuth2User user){
-        return user.getAttribute("login").toString();
+    public AppUser getMe(@AuthenticationPrincipal OAuth2User user){
+        return user.getAttribute("login");
     }
 }
