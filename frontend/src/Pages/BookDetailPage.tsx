@@ -52,7 +52,7 @@ export default function BookDetailPage({onDelete} : Readonly<loadBooks>) {
 
     return (
         <div className="cardsBackGroundColor cardsShadowBorder max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
-            <BookDetail key={Book.id} BookItem={Book} handleDelete={() => setModalOpen(true)}  />
+            <BookDetail key={Book.id} bookItem={Book} handleDelete={() => setModalOpen(true)}  />
 
             <ModalQuestion isOpen={modalOpen} onClose={() => setModalOpen(false)} onSubmit={handleDelete}
                            modalTitle={"Buch löschen"}
