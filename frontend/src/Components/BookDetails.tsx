@@ -18,7 +18,8 @@ export default function BookDetail({BookItem,handleDelete} : Readonly<BookDetail
             <div className="">
                 <div>
                     <h2 className="cardsTextColor mb-2 text-2xl font-bold ">{BookItem.title}</h2>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Autor:</span> {BookItem.author}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {BookItem.author}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {BookItem.categories}</p>
                     <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {BookItem.isbn}</p>
                     <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {BookItem.publicationDate}</p>
                     <p className="cardsTextColor">{BookItem.description}</p>

@@ -4,9 +4,10 @@ import {Route, Routes} from "react-router-dom";
 import Header from "./Components/Header.tsx";
 import BookDetailPage from "./Pages/BookDetailPage.tsx";
 import AddBookPage from "./Pages/AddBookPage.tsx";
-import axios from "axios";
-import {useEffect, useState} from "react";
 import type {Book} from "./models/Book.tsx";
+import {useEffect, useState} from "react";
+import ProtectedRoute from "./ProtectedRoute.tsx";
+import axios from "axios";
 
 function App() {
 
@@ -27,16 +28,43 @@ function App() {
         loadBooks()
     }, []);
 
+    const [user, setUser] = useState<string | undefined | null>(undefined);
+
+    function login() {
+        const host:string = window.location.host === "localhost:5173"
+            ? "http://localhost:8080"
+            : window.location.origin;
+        window.open(host + "/oauth2/authorization/github", "self")
+    }
+
+    function logout() {
+        const host:string = window.location.host === "localhost:5173"
+            ? "http://localhost:8080"
+            : window.location.origin;
+        window.open(host + "/logout", "self")
+    }
+
+    const loadUser = () => {
+        axios.get("/api/auth/me")
+            .then((response) => setUser(response.data))
+            .catch(() => setUser(null));
+    }
+
+    useEffect(() => {
+        loadUser()
+    }, []);
 
     return (
       <>
 
-
-          <Header></Header>
+          <Header user={user} onLogin={login} onLogout={logout} />
           <Routes>
               <Route path={""} element={<Books books={books}></Books>}/>
               <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
               <Route path="/books/add" element={<AddBookPage/>}/>
+              <Route element={<ProtectedRoute user={user} />} >
+
+              </Route>
           </Routes>
 
 

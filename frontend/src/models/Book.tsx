@@ -7,4 +7,5 @@ export type Book = {
     smallThumbnail : string;
     thumbnail: string;
     publicationDate: string;
+    categories: string[];
 }
