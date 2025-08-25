@@ -2,20 +2,35 @@ import type {Book} from "../models/Book.tsx";
 import type {BookDTO} from "../models/BookDTO.tsx"
 import axios from "axios";
 
-export default function BookSuggestion(Book : {BookItem:Book}) {
+type bookSuggestionsProps = {
+    Book : {BookItem: Book};
+    onAdd: () => void;
+}
+
+export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
 
     function truncateText(text:string, maxLength:number) {
         if (!text) return '';
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     }
 
-    function addBookToDB() {
-        const bookToPost:BookDTO = {title:Book.BookItem.title, author:Book.BookItem.author, isbn:Book.BookItem.isbn,
-            categories:Book.BookItem.categories, publicationDate:Book.BookItem.publicationDate,
-            description:Book.BookItem.description, smallThumbnail:Book.BookItem.smallThumbnail,
-            thumbnail:Book.BookItem.thumbnail}
-        axios.post("/api/books", bookToPost).then((res) => {console.log(res.data);})
-            .catch(e => {console.log(e);});
+    async function addBookToDB() {
+        try {
+            const bookToPost: BookDTO = {
+                title: props.Book.BookItem.title, author: props.Book.BookItem.author, isbn: props.Book.BookItem.isbn,
+                categories: props.Book.BookItem.categories, publicationDate: props.Book.BookItem.publicationDate,
+                description: props.Book.BookItem.description, smallThumbnail: props.Book.BookItem.smallThumbnail,
+                thumbnail: props.Book.BookItem.thumbnail
+            };
+            axios.post("/api/books", bookToPost).then((res) => {
+                console.log(res.data);
+            })
+                .catch(e => {
+                    console.log(e);
+                });
+        } finally {
+            props.onAdd();
+        }
     }
 
     return (
@@ -23,13 +38,13 @@ export default function BookSuggestion(Book : {BookItem:Book}) {
             <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
             <div className="">
                 <div>
-                    <img src={Book.BookItem.smallThumbnail} alt={Book.BookItem.title} className="smallImg mx-auto"/>
-                    <h2 className="text-xl font-bold cardsTextColor mb-2">{Book.BookItem.title}</h2>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {Book.BookItem.author}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {Book.BookItem.categories}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {Book.BookItem.isbn}</p>
-                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {Book.BookItem.publicationDate}</p>
-                    <p className="cardsTextColor">{truncateText(Book.BookItem.description, 200)}</p>
+                    <img src={props.Book.BookItem.smallThumbnail} alt={props.Book.BookItem.title} className="smallImg mx-auto"/>
+                    <h2 className="text-xl font-bold cardsTextColor mb-2">{props.Book.BookItem.title}</h2>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {props.Book.BookItem.author}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {props.Book.BookItem.categories}</p>
+                    <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {props.Book.BookItem.isbn}</p>
+                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {props.Book.BookItem.publicationDate}</p>
+                    <p className="cardsTextColor">{truncateText(props.Book.BookItem.description, 200)}</p>
                     <button onClick={addBookToDB}>Zur Bibliothek hinzufügen</button>
                 </div>
             </div>
