@@ -14,12 +14,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final AppUserRepo appUserRepo;
 
+    @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        AppUser appUser = appUserRepo.findById(oAuth2User.getName())
+        OAuth2User oAuth2User = fetchOAuth2User(userRequest);
+
+        appUserRepo.findById(oAuth2User.getName())
                 .orElseGet(() -> createAppUser(oAuth2User));
 
         return oAuth2User;
+    }
+
+    protected OAuth2User fetchOAuth2User(OAuth2UserRequest req) {
+        return super.loadUser(req);
     }
 
     private AppUser createAppUser(OAuth2User oAuth2User) {
