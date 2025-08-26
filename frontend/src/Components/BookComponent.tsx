@@ -8,6 +8,7 @@ import {useState} from "react";
 import axios from "axios";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import * as React from "react";
 
 type bookloadProp = {
     bookItem : Book
@@ -20,6 +21,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
     const [saving, setSaving] = useState(false);
     const [checked, setChecked] = useState(bookItem.bookmark ?? false);
     const [favorite, setFavorite] = useState(bookItem.favorite ?? false);
+    const [rating, setRating] = React.useState<number | null>(bookItem.rating);
 
     const updateBook = async (changes: Partial<Book>) => {
         await axios.put(`/api/books/${bookItem.id}`, { ...bookItem, ...changes });
@@ -34,6 +36,17 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
         setSaving(true);
         try {
             await updateBook({ [key]: newValue } as Partial<Book>);
+        } finally {
+            setSaving(false);
+            onChange();
+        }
+    };
+
+    const saveRating = async (newValue: number | null) => {
+        setRating(newValue);
+        setSaving(true);
+        try {
+            await updateBook({ rating: newValue } as Partial<Book>);
         } finally {
             setSaving(false);
             onChange();
@@ -98,7 +111,13 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                 </Link>
 
                 <div className="mt-4">
-                    <Rating name="half-rating" defaultValue={0.5} precision={0.5} />
+                    <Rating
+                        name="simple-controlled"
+                        value={rating}
+                        precision={0.5}
+                        disabled={saving}
+                        onChange={(_, newValue) => { void saveRating(newValue); }}
+                    />
                 </div>
                 <div className="flex justify-end space-x-2 mt-4">
                     <Link to={`/books/${bookItem.id}` } className="cursor-pointer">

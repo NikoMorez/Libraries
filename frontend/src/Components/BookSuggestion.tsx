@@ -25,7 +25,8 @@ export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
                 description: props.Book.BookItem.description, smallThumbnail: props.Book.BookItem.smallThumbnail,
                 thumbnail: props.Book.BookItem.thumbnail,
                 bookmark: false,
-                favorite: false
+                favorite: false,
+                rating: null
             };
             axios.post("/api/books", bookToPost).then((res) => {
                 console.log(res.data);
