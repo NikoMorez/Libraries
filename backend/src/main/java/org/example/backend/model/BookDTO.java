@@ -16,7 +16,8 @@ public record BookDTO(
         String thumbnail,
         List<String> categories,
         Boolean bookmark,
-        Boolean favorite
+        Boolean favorite,
+        Double rating
 ) {
 
 }
