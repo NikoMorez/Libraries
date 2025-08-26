@@ -18,8 +18,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = fetchOAuth2User(userRequest);
 
-        appUserRepo.findById(oAuth2User.getName())
-                .orElseGet(() -> createAppUser(oAuth2User));
+        String id = oAuth2User.getName();
+        if (appUserRepo.findById(id).isEmpty()) {
+            createAppUser(oAuth2User);
+        }
 
         return oAuth2User;
     }
