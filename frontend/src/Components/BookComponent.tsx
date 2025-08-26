@@ -71,7 +71,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                              />
                 ) : <div></div>
                 }
-                <Link to={`/Books/${bookItem.id}`} className="cursor-pointer">
+                <Link to={`/books/${bookItem.id}`} className="cursor-pointer">
                     <h2 className="text-xl font-bold cardsTextColor mb-2">{bookItem.title}</h2>
                     <p className="cardsTextColor">
                         <span className="font-semibold">Verfassende:</span> {bookItem.author}
