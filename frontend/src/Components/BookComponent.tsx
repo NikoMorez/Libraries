@@ -42,7 +42,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                 thumbnail: bookItem.thumbnail,
                 publicationDate : bookItem.publicationDate,
                 categories: bookItem.categories,
-                bookmark: checked
+                bookmark: newValue
             });
         } finally {
             setSaving(false);
