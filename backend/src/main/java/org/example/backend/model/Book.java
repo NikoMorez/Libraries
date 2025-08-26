@@ -15,7 +15,8 @@ public record Book(
         LocalDate publicationDate,
         String smallThumbnail,
         String thumbnail,
-        List<String> categories
+        List<String> categories,
+        Boolean bookmark
 ) {
 
 }

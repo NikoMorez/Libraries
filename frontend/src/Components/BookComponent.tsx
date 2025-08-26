@@ -5,19 +5,68 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditIcon from '@mui/icons-material/Edit';
 import {useState} from "react";
+import axios from "axios";
 
 
 
-export default function BookComponent( Book : {item:Book} ) {
+type bookloadProp = {
+    bookItem : Book
+    onChange: () => void
+}
+
+
+export default function BookComponent({bookItem, onChange } : bookloadProp ) {
 
     const [smallCoverError, setSmallCoverError] = useState(false);
 
+
+
+    const [saving, setSaving] = useState(false);
+    const [checked, setChecked] = useState(bookItem.bookmark ?? false);
+
+    const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.checked;
+        setChecked(newValue);
+        setSaving(true);
+
+        console.log(newValue);
+
+
+        try {
+            await axios.put(`/api/books/${bookItem.id}`, {
+                author : bookItem.author,
+                isbn: bookItem.isbn,
+                description: bookItem.description,
+                smallThumbnail: bookItem.smallThumbnail,
+                thumbnail: bookItem.thumbnail,
+                publicationDate : bookItem.publicationDate,
+                categories: bookItem.categories,
+                bookmark: checked
+            });
+        } finally {
+            setSaving(false);
+            onChange();
+        }
+    };
+
+
+
+
+
     return (
         <div className="max-w-sm mx-auto my-4">
+            <div>
+                <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={handleCheckboxChange}
+                    disabled={saving}
+                />
+            </div>
             <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
-                {Book.item.smallThumbnail && !smallCoverError ?(
+                {bookItem.smallThumbnail && !smallCoverError ?(
                              <img
-                                 src={Book.item.smallThumbnail}
+                                 src={bookItem.smallThumbnail}
                                  className={"mx-auto mb-5"}
                                  alt="Vorschau kleines Cover"
                                  height={125}
@@ -28,28 +77,28 @@ export default function BookComponent( Book : {item:Book} ) {
                              />
                 ) : <div></div>
                 }
-                <Link to={`/Books/${Book.item.id}`} className="cursor-pointer">
-                    <h2 className="text-xl font-bold cardsTextColor mb-2">{Book.item.title}</h2>
+                <Link to={`/Books/${bookItem.id}`} className="cursor-pointer">
+                    <h2 className="text-xl font-bold cardsTextColor mb-2">{bookItem.title}</h2>
                     <p className="cardsTextColor">
-                        <span className="font-semibold">Verfassende:</span> {Book.item.author}
+                        <span className="font-semibold">Verfassende:</span> {bookItem.author}
                     </p>
 
                     <p className="cardsTextColor">
-                        <span className="font-semibold">Kategorien:</span> {Book.item.categories}
+                        <span className="font-semibold">Kategorien:</span> {bookItem.categories}
                     </p>
 
                     <p className="cardsTextColor">
-                        <span className="font-semibold">ISBN:</span> {Book.item.isbn}
+                        <span className="font-semibold">ISBN:</span> {bookItem.isbn}
                     </p>
 
                     <p className="cardsTextColor">
-                        <span className="font-semibold">Veröffentlicht:</span> {new Date(Book.item.publicationDate).toLocaleDateString("de-DE")}
+                        <span className="font-semibold">Veröffentlicht:</span> {new Date(bookItem.publicationDate).toLocaleDateString("de-DE")}
                     </p>
 
                     <p className="cardsTextColor mt-3 text-sm">
-                        {Book.item.description.length > 160 ?
-                        Book.item.description.substring(0,160) +"... " :
-                        Book.item.description }
+                        {bookItem.description.length > 160 ?
+                            bookItem.description.substring(0,160) +"... " :
+                            bookItem.description }
                     </p>
 
                 </Link>
@@ -58,10 +107,10 @@ export default function BookComponent( Book : {item:Book} ) {
                     <Rating name="half-rating" defaultValue={0.5} precision={0.5} />
                 </div>
                 <div className="flex justify-end space-x-2 mt-4">
-                    <Link to={`/books/${Book.item.id}` } className="cursor-pointer">
+                    <Link to={`/books/${bookItem.id}` } className="cursor-pointer">
                         <ManageSearchIcon />
                     </Link>
-                    <Link to={`books/${Book.item.id}/edit`} className="cursor-pointer">
+                    <Link to={`books/${bookItem.id}/edit`} className="cursor-pointer">
                         <EditIcon className="cursor-pointer"/>
                     </Link>
                     <Link to={""}  className="cursor-pointer">

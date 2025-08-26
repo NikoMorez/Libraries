@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
@@ -39,7 +40,8 @@ class ApiControllerTest {
                 LocalDate.of(1954, 7, 29),
                 "",
                 "",
-                new ArrayList<>());
+                new ArrayList<>(),
+                false);
 
         Book book2 = new Book("2",
                 "1984",
@@ -49,7 +51,8 @@ class ApiControllerTest {
                 LocalDate.of(1949, 6, 8),
                 "",
                 "",
-                new ArrayList<>());
+                new ArrayList<>(),
+                false);
 
         bookRepo.save(book1);
         bookRepo.save(book2);
