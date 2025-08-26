@@ -8,4 +8,5 @@ export type BookDTO = {
     publicationDate: string;
     categories: string[];
     bookmark : boolean;
+    favorite : boolean;
 }

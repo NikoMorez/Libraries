@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useState} from "react";
 import axios from "axios";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 
 
@@ -24,6 +25,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
 
     const [saving, setSaving] = useState(false);
     const [checked, setChecked] = useState(bookItem.bookmark ?? false);
+    const [favorite, setFavorite] = useState(bookItem.favorite ?? false);
 
     const handleToggle = async () => {
         const newValue = !checked;
@@ -42,7 +44,34 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                 thumbnail: bookItem.thumbnail,
                 publicationDate : bookItem.publicationDate,
                 categories: bookItem.categories,
-                bookmark: newValue
+                bookmark: newValue,
+                favorite: bookItem.favorite,
+            });
+        } finally {
+            setSaving(false);
+            onChange();
+        }
+    };
+
+    const handldeFavoriteToggle = async () => {
+        const newValue = !favorite;
+        setFavorite(newValue);
+        setSaving(true);
+
+        console.log(newValue);
+
+
+        try {
+            await axios.put(`/api/books/${bookItem.id}`, {
+                author : bookItem.author,
+                isbn: bookItem.isbn,
+                description: bookItem.description,
+                smallThumbnail: bookItem.smallThumbnail,
+                thumbnail: bookItem.thumbnail,
+                publicationDate : bookItem.publicationDate,
+                categories: bookItem.categories,
+                bookmark: bookItem.bookmark,
+                favorite: newValue,
             });
         } finally {
             setSaving(false);
@@ -120,8 +149,12 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                     <Link to={`books/${bookItem.id}/edit`} className="cursor-pointer">
                         <EditIcon className="cursor-pointer"/>
                     </Link>
-                    <Link to={""}  className="cursor-pointer">
-                        <FavoriteIcon className="cursor-pointer"/>
+                    <Link to={""}  className="cursor-pointer" onClick={handldeFavoriteToggle}>
+                        {bookItem.favorite ? (
+                            <FavoriteIcon className="cursor-pointer" />
+                        ) : (
+                            <FavoriteBorder className="cursor-pointer" />
+                        )}
                     </Link>
                 </div>
             </div>
