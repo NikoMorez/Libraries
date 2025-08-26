@@ -2,10 +2,11 @@ import BookComponent from "../Components/BookComponent.tsx";
 import type {Book} from "../models/Book.tsx";
 
 type bookloadProp = {
-    books : Book[]
+    books: Book[]
+    onChange: () => void
 }
 
-export default function Books({books} : Readonly<bookloadProp>) {
+export default function Books({books, onChange} : Readonly<bookloadProp>) {
 
 
     return (
@@ -13,7 +14,8 @@ export default function Books({books} : Readonly<bookloadProp>) {
             {books.map((book) => (
 
                 <BookComponent key={book.id}
-                    item={book}
+                    bookItem={book}
+                               onChange={onChange}
                 />
 
             ))}

@@ -60,7 +60,7 @@ function App() {
 
           <Header user={user} onLogin={login} onLogout={logout} />
           <Routes>
-              <Route path={""} element={<Books books={books}></Books>}/>
+              <Route path={""} element={<Books books={books} onChange={loadBooks}></Books>}/>
               <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
               <Route path="/books/add" element={<AddBookPage onAddBook={loadBooks}/>}/>
               <Route element={<ProtectedRoute user={user} />} >

@@ -29,9 +29,10 @@ public class BookService {
 
     public Book addBook(BookDTO book) {
         String newId = idService.randomId();
+        boolean bookmark = false;
         return bookRepo.save(new Book(
                 newId, book.title(), book.author(), book.isbn(), book.description(), book.publicationDate(),
-                book.smallThumbnail(), book.thumbnail(), book.categories()
+                book.smallThumbnail(), book.thumbnail(), book.categories(), bookmark
         ));
     }
 
@@ -46,7 +47,9 @@ public class BookService {
                     bookDto.publicationDate(),
                     bookDto.smallThumbnail(),
                     bookDto.thumbnail(),
-                    bookDto.categories()
+                    bookDto.categories(),
+                    bookDto.bookmark()
+
             );
             return bookRepo.save(updated);
         });

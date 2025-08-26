@@ -14,7 +14,8 @@ public record BookDTO(
         LocalDate publicationDate,
         String smallThumbnail,
         String thumbnail,
-        List<String> categories
+        List<String> categories,
+        Boolean bookmark
 ) {
 
 }

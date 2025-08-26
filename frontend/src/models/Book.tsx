@@ -8,4 +8,5 @@ export type Book = {
     thumbnail: string;
     publicationDate: string;
     categories: string[];
+    bookmark : boolean;
 }

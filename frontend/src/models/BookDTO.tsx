@@ -7,4 +7,5 @@ export type BookDTO = {
     thumbnail: string;
     publicationDate: string;
     categories: string[];
+    bookmark : boolean;
 }
