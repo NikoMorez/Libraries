@@ -9,78 +9,36 @@ import axios from "axios";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
-
-
 type bookloadProp = {
     bookItem : Book
     onChange: () => void
 }
 
-
 export default function BookComponent({bookItem, onChange } : bookloadProp ) {
 
     const [smallCoverError, setSmallCoverError] = useState(false);
-
-
-
     const [saving, setSaving] = useState(false);
     const [checked, setChecked] = useState(bookItem.bookmark ?? false);
     const [favorite, setFavorite] = useState(bookItem.favorite ?? false);
 
-    const handleToggle = async () => {
-        const newValue = !checked;
-        setChecked(newValue);
+    const updateBook = async (changes: Partial<Book>) => {
+        await axios.put(`/api/books/${bookItem.id}`, { ...bookItem, ...changes });
+    };
+
+    const toggle = async (key: 'bookmark' | 'favorite') => {
+        const newValue = key === 'bookmark' ? !checked : !favorite;
+
+        if (key === 'bookmark') setChecked(newValue);
+        else setFavorite(newValue);
+
         setSaving(true);
-
-        console.log(newValue);
-
-
         try {
-            await axios.put(`/api/books/${bookItem.id}`, {
-                author : bookItem.author,
-                isbn: bookItem.isbn,
-                description: bookItem.description,
-                smallThumbnail: bookItem.smallThumbnail,
-                thumbnail: bookItem.thumbnail,
-                publicationDate : bookItem.publicationDate,
-                categories: bookItem.categories,
-                bookmark: newValue,
-                favorite: bookItem.favorite,
-            });
+            await updateBook({ [key]: newValue } as Partial<Book>);
         } finally {
             setSaving(false);
             onChange();
         }
     };
-
-    const handldeFavoriteToggle = async () => {
-        const newValue = !favorite;
-        setFavorite(newValue);
-        setSaving(true);
-
-        console.log(newValue);
-
-
-        try {
-            await axios.put(`/api/books/${bookItem.id}`, {
-                author : bookItem.author,
-                isbn: bookItem.isbn,
-                description: bookItem.description,
-                smallThumbnail: bookItem.smallThumbnail,
-                thumbnail: bookItem.thumbnail,
-                publicationDate : bookItem.publicationDate,
-                categories: bookItem.categories,
-                bookmark: bookItem.bookmark,
-                favorite: newValue,
-            });
-        } finally {
-            setSaving(false);
-            onChange();
-        }
-    };
-
-
-
 
 
     return (
@@ -88,7 +46,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
 
             <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
                 <button
-                    onClick={() => handleToggle()}
+                    onClick={() => toggle('bookmark')}
                     disabled={saving}
                     className="absolute mx-35 -my-10 p-1 cursor-pointer "
                 >
@@ -149,13 +107,15 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                     <Link to={`books/${bookItem.id}/edit`} className="cursor-pointer">
                         <EditIcon className="cursor-pointer"/>
                     </Link>
-                    <Link to={""}  className="cursor-pointer" onClick={handldeFavoriteToggle}>
-                        {bookItem.favorite ? (
-                            <FavoriteIcon className="cursor-pointer" />
-                        ) : (
-                            <FavoriteBorder className="cursor-pointer" />
-                        )}
-                    </Link>
+                    <button
+                        type="button"
+                        onClick={() => toggle('favorite')}
+                        disabled={saving}
+                        className="cursor-pointer"
+                        aria-label={favorite ? 'Nicht mehr als Favorit markieren' : 'Als Favorit markieren'}
+                    >
+                        {favorite ? <FavoriteIcon /> : <FavoriteBorder />}
+                    </button>
                 </div>
             </div>
         </div>
