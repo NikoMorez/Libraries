@@ -3,9 +3,14 @@ import {type FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Box, Stack, TextField, Button} from "@mui/material";
 import axios from "axios";
-import { textFieldSx, buttonSx, imgBoxSx } from "./BookEditForm.styles";
+import { textFieldSx, imgBoxSx } from "./BookEditForm.styles";
 
-export default function BookEditForm({book}: {book: Book}) {
+type Props = {
+    book: Book;
+    onEdit: () => void;
+};
+
+export default function BookEditForm({ book, onEdit }: Readonly<Props>) {
 
     const navigate = useNavigate();
     const [title, setTitle] = useState(book.title);
@@ -46,6 +51,7 @@ export default function BookEditForm({book}: {book: Book}) {
             navigate(`/books/${book.id}`);
         } finally {
             setSaving(false);
+            onEdit();
         }
     }
 
@@ -186,10 +192,10 @@ export default function BookEditForm({book}: {book: Book}) {
                     ) : null}
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-                    <Button type="button" variant="text" onClick={() => navigate(-1)} disabled={saving} sx={buttonSx}>
+                    <Button type="button" variant="text" onClick={() => navigate(-1)} disabled={saving} className={"stdButton stdColor"}>
                         Abbrechen
                     </Button>
-                    <Button type="submit" variant="contained" disabled={saving} sx={buttonSx}>
+                    <Button type="submit" variant="contained" disabled={saving} className={"stdButton stdColor"}>
                         {saving ? "Speichern…" : "Speichern"}
                     </Button>
                 </Box>

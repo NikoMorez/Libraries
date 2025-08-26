@@ -55,36 +55,6 @@ export const textFieldSx: SxProps<Theme> = {
     },
 };
 
-export const buttonSx: SxProps<Theme> = {
-    borderRadius: "8px",
-    border: "1px solid transparent",
-    padding: "0.6em 1.2em",
-    fontSize: "1em",
-    fontWeight: 500,
-    fontFamily: "inherit",
-    cursor: "pointer",
-    textTransform: "none",
-    transition: "border-color 0.25s, background-color 0.25s",
-
-    backgroundColor: "rgb(30 41 59)",   // slate-800
-    color: "rgb(250 250 249)",          // stone-50
-    "&:hover": {
-        borderColor: "rgb(51 65 85)",     // slate-700
-        backgroundColor: "rgb(51 65 85)", // slate-700
-    },
-    "&.Mui-focused": {
-        borderColor: "rgb(250 250 249)",  // stone-50
-    },
-
-    "@media (prefers-color-scheme: dark)": {
-        backgroundColor: "rgb(38 38 38)",   // neutral-800
-        color: "rgb(245 245 244)",          // zinc-100
-        "&:hover": {
-            borderColor: "rgb(250 250 249)",  // stone-50
-            backgroundColor: "rgb(64 64 64)", // neutral-700
-        },
-    },
-};
 export const imgBoxSx: SxProps<Theme> = {
     mt: 1,
     borderRadius: 2,

@@ -1,6 +1,8 @@
 import type {Book} from "../models/Book.tsx";
 import {Rating} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import {Link} from "react-router-dom";
 
 
 
@@ -29,6 +31,9 @@ export default function BookDetail({bookItem,handleDelete} : Readonly<BookDetail
                 </div>
                 <div className="flex justify-end space-x-2 mt-4">
                     <div>
+                        <Link to={`../../books/${bookItem.id}/edit`} className="cursor-pointer">
+                            <EditIcon className="cursor-pointer"/>
+                        </Link>
                         <button type="button" className="transparentButton text-gray-200" onClick={handleDelete}>
                             <DeleteIcon/>
                         </button>

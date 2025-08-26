@@ -3,6 +3,7 @@ import Books from "./Pages/Books.tsx";
 import {Route, Routes} from "react-router-dom";
 import Header from "./Components/Header.tsx";
 import BookDetailPage from "./Pages/BookDetailPage.tsx";
+import BookEditPage from "./Pages/BookEditPage.tsx";
 import AddBookPage from "./Pages/AddBookPage.tsx";
 import type {Book} from "./models/Book.tsx";
 import {useEffect, useState} from "react";
@@ -63,7 +64,7 @@ function App() {
               <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
               <Route path="/books/add" element={<AddBookPage onAddBook={loadBooks}/>}/>
               <Route element={<ProtectedRoute user={user} />} >
-
+                  <Route path="/books/:id/edit" element={<BookEditPage onEdit={loadBooks} />} />
               </Route>
           </Routes>
 
