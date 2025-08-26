@@ -14,6 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @SuppressWarnings("java:S4502") // CSRF absichtlich deaktiviert
 public class SecurityConfig {
 
+    @Value("${app.url}")
+    String appUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -21,9 +24,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(a -> a
                         .requestMatchers( HttpMethod.GET,"/api/example").authenticated()
                         .anyRequest().permitAll())
-                .logout(l -> l.logoutSuccessUrl("http://localhost:5173"))
+                .logout(l -> l.logoutSuccessUrl(appUrl))
                 .oauth2Login(o -> o
-                        .defaultSuccessUrl("http://localhost:5173"));
+                        .defaultSuccessUrl(appUrl));
         return http.build();
     }
 }
