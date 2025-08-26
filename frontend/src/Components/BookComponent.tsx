@@ -6,6 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditIcon from '@mui/icons-material/Edit';
 import {useState} from "react";
 import axios from "axios";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 
 
@@ -24,8 +25,8 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
     const [saving, setSaving] = useState(false);
     const [checked, setChecked] = useState(bookItem.bookmark ?? false);
 
-    const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.checked;
+    const handleToggle = async () => {
+        const newValue = !checked;
         setChecked(newValue);
         setSaving(true);
 
@@ -55,15 +56,21 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
 
     return (
         <div className="max-w-sm mx-auto my-4">
-            <div>
-                <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={handleCheckboxChange}
-                    disabled={saving}
-                />
-            </div>
+
             <div className="cardsBackGroundColor cardsShadowBorder cardsHover p-6 transform transition">
+                <button
+                    onClick={() => handleToggle()}
+                    disabled={saving}
+                    className="absolute mx-35 -my-10 p-1 cursor-pointer "
+                >
+                    {checked ? (
+                        <BookmarkIcon className="w-6 h-6 text-yellow-400 " />
+                    ) : (
+                        <BookmarkIcon className="w-6 h-6 text-gray-400 hover:text-yellow-400" />
+                    )}
+                </button>
+
+
                 {bookItem.smallThumbnail && !smallCoverError ?(
                              <img
                                  src={bookItem.smallThumbnail}
