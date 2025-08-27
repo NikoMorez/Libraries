@@ -69,4 +69,15 @@ public class ApiController {
         }
         return ResponseEntity.ok(books);
     }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<Book>> getFavorites(
+            @RequestParam(name = "favorite", defaultValue = "true") boolean favorite
+    ) {
+        List<Book> result = bookService.getByFavorite(favorite);
+        if (result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(result);
+    }
 }
