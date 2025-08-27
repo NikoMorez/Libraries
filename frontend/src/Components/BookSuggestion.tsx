@@ -46,7 +46,7 @@ export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
                     <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {props.Book.BookItem.author}</p>
                     <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {props.Book.BookItem.categories}</p>
                     <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {props.Book.BookItem.isbn}</p>
-                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {props.Book.BookItem.publicationDate}</p>
+                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {new Date(props.Book.BookItem.publicationDate).toLocaleDateString("de-DE")}</p>
                     <p className="cardsTextColor">{truncateText(props.Book.BookItem.description, 200)}</p>
                     <button className={"stdButton stdColor disabled:!bg-stone-600 mt-2"} onClick={addBookToDB} disabled={buttonDisabled}>{buttonDisabled ? "Bereits in Bibliothek" : "Zur Bibliothek hinzufügen"}</button>
                 </div>
