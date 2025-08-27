@@ -14,7 +14,7 @@ export default function BookDetail({bookItem,handleDelete} : Readonly<BookDetail
 
     return (
        <>
-            <img src={bookItem.thumbnail} alt={bookItem.title} className="" />
+            <img src={bookItem.thumbnail} alt={bookItem.title} className="mx-auto" width={300} height={300} />
 
             <div className="">
                 <div>
@@ -30,7 +30,7 @@ export default function BookDetail({bookItem,handleDelete} : Readonly<BookDetail
                         <Link to={`../../books/${bookItem.id}/edit`} className="cursor-pointer">
                             <EditIcon className="cursor-pointer"/>
                         </Link>
-                        <button type="button" className="transparentButton text-gray-200" onClick={handleDelete}>
+                        <button type="button" className="transparentButton " onClick={handleDelete}>
                             <DeleteIcon/>
                         </button>
                     </div>

@@ -57,7 +57,7 @@ export default function BookDetailPage({onDelete} : Readonly<loadBooks>) {
             <ModalQuestion isOpen={modalOpen} onClose={() => setModalOpen(false)} onSubmit={handleDelete}
                            modalTitle={"Buch löschen"}
                            modalDescription={"Willst du dieses Buch wirklich löschen?"}
-                           bgColor={"bg-amber-600"}
+                           bgColor={"dark:bg-gray-600 bg-stone-700"}
                            buttonTrueColor={"deleteColor"}
                            buttonTrueText={"Löschen"}
             ></ModalQuestion>
