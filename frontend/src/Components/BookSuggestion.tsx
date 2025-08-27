@@ -26,15 +26,11 @@ export default function BookSuggestion(props: Readonly<bookSuggestionsProps>) {
                 thumbnail: props.Book.BookItem.thumbnail,
                 bookmark: false
             };
-            axios.post("/api/books", bookToPost).then((res) => {
-                console.log(res.data);
-            })
-                .catch(e => {
-                    console.log(e);
-                });
-        } finally {
+            await axios.post("/api/books", bookToPost);
             props.onAdd();
-            setButtonDisabled(true);
+            setButtonDisabled(true)
+        } catch (e) {
+            console.error(e);
         }
     }
 
