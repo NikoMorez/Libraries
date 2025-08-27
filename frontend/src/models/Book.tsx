@@ -9,4 +9,5 @@ export type Book = {
     publicationDate: string;
     categories: string[];
     bookmark : boolean;
+    favorite : boolean;
 }

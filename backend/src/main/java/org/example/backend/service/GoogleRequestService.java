@@ -39,6 +39,7 @@ public class GoogleRequestService {
                     item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().smallThumbnail() != null ? item.volumeInfo().imageLinks().smallThumbnail() : "",
                     item.volumeInfo() != null && item.volumeInfo().imageLinks() != null && item.volumeInfo().imageLinks().thumbnail() != null ? item.volumeInfo().imageLinks().thumbnail() : "",
                     item.volumeInfo() != null && item.volumeInfo().categories() != null ? item.volumeInfo().categories() : new ArrayList<>(),
+                    false,
                     false
             ));
         }
