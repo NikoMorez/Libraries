@@ -36,14 +36,14 @@ export default function Header({ user, onLogout, onLogin }: HeaderProps) {
                         {user ? (
                             <button
                                 onClick={onLogout}
-                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-800 border dark:text-gray-200 border-gray-500 rounded-md hover:bg-gray-600 transition"
+                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-white border dark:text-gray-200  border-gray-500 rounded-md hover:bg-gray-600 transition"
                             >
                                 Logout
                             </button>
                         ) : (
                             <button
                                 onClick={onLogin}
-                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-gray-800 dark:text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
+                                className="w-28 ml-auto inline-flex items-center justify-center h-8 px-3 text-sm font-medium leading-none text-white dark:text-gray-200 border border-gray-500 rounded-md hover:bg-gray-600 transition"
                             >
                                 Login
                             </button>

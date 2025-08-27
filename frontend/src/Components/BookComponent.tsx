@@ -66,7 +66,7 @@ export default function BookComponent({bookItem, onChange } : bookloadProp ) {
                     {checked ? (
                         <BookmarkIcon className="w-6 h-6 text-yellow-400 " />
                     ) : (
-                        <BookmarkIcon className="w-6 h-6 text-gray-400 hover:text-yellow-400" />
+                        <BookmarkIcon className="w-6 h-6 dark:text-gray-400 text-gray-600 hover:text-yellow-500" />
                     )}
                 </button>
 

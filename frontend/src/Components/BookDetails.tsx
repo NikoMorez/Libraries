@@ -14,28 +14,34 @@ export default function BookDetail({bookItem,handleDelete} : Readonly<BookDetail
 
     return (
        <>
-            <img src={bookItem.thumbnail} alt={bookItem.title} className="" />
 
-            <div className="">
-                <div>
-                    <h2 className="cardsTextColor mb-2 text-2xl font-bold ">{bookItem.title}</h2>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Verfassende:</span> {bookItem.author}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">Kategorien:</span> {bookItem.categories}</p>
-                    <p className="cardsTextColor mb-1"><span className="font-semibold">ISBN:</span> {bookItem.isbn}</p>
-                    <p className="cardsTextColor mb-3"><span className="font-semibold">Veröffentlicht:</span> {bookItem.publicationDate}</p>
-                    <p className="cardsTextColor">{bookItem.description}</p>
-                </div>
+           <h2 className="cardsTextColor mb-4 text-2xl font-bold text-center">
+               {bookItem.title}
+           </h2>
+           <div className="flex flex-col md:flex-row gap-6">
+               <img
+                   src={bookItem.thumbnail}
+                   alt={bookItem.title}
+                   className="mx-auto my-auto w-[400px] h-[400px] object-contain"
+               />
+               <div>
+                    <p className="cardsTextColor text-left mb-1"><span className="font-bold">Verfassende:</span> {bookItem.author}</p>
+                    <p className="cardsTextColor text-left mb-1"><span className="font-bold">Kategorien:</span> {bookItem.categories}</p>
+                    <p className="cardsTextColor text-left mb-1"><span className="font-bold">ISBN:</span> {bookItem.isbn}</p>
+                    <p className="cardsTextColor text-left mb-3"><span className="font-bold">Veröffentlicht:</span> {new Date(bookItem.publicationDate).toLocaleDateString("de-DE")}</p>
+                    <p className="cardsTextColor text-left">{bookItem.description}</p>
                 <div className="flex justify-end space-x-2 mt-4">
                     <div>
                         <Link to={`../../books/${bookItem.id}/edit`} className="cursor-pointer">
                             <EditIcon className="cursor-pointer"/>
                         </Link>
-                        <button type="button" className="transparentButton text-gray-200" onClick={handleDelete}>
+                        <button type="button" className="transparentButton " onClick={handleDelete}>
                             <DeleteIcon/>
                         </button>
                     </div>
                 </div>
             </div>
+           </div>
        </>
     );
 }
