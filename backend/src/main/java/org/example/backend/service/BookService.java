@@ -65,4 +65,8 @@ public class BookService {
             return book;
         });
     }
+
+    public List<Book> getByFavorite(boolean favorite) {
+        return bookRepo.findByFavorite(favorite);
+    }
 }

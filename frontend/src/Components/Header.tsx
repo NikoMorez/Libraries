@@ -28,6 +28,10 @@ export default function Header({ user, onLogout, onLogin }: HeaderProps) {
                               className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
                             Bücher hinzufügen
                         </Link>
+                        <Link to={"/books/favorites"}
+                              className="py-3 text-gray-200 font-medium border-b-2 border-transparent hover:text-amber-700 hover:border-white transition">
+                            Lieblingsbücher
+                        </Link>
 
                         {user ? (
                             <button

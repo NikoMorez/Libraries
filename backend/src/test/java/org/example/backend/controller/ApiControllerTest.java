@@ -41,7 +41,7 @@ class ApiControllerTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false,
+                true,
                 null
         );
 
@@ -177,5 +177,35 @@ class ApiControllerTest {
                       }
                   ]
                   """));
+    }
+
+    @Test
+    void testGetFavorites_defaultTrue_returnsOnlyFavorites() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/favorites"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value("1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].favorite").value(true));
+    }
+
+    @Test
+    void testGetFavorites_false_returnsOnlyNonFavorites() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/favorites?favorite=false"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].favorite").value(false));
+    }
+
+    @Test
+    void testGetFavorites_returns204WhenNoMatching() throws Exception {
+        bookRepo.deleteAll();
+        bookRepo.save(new Book("10", "Foo", "Bar", "isbn-foo", "desc",
+                LocalDate.of(2000,1,1), "", "", new ArrayList<>(), false, true, null));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/favorites?favorite=false"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }

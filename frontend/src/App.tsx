@@ -9,6 +9,7 @@ import type {Book} from "./models/Book.tsx";
 import {useEffect, useState} from "react";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import axios from "axios";
+import FavoriteBooksPage from "./Pages/FavoriteBooksPage.tsx";
 
 function App() {
 
@@ -63,6 +64,10 @@ function App() {
               <Route path={""} element={<Books books={books} onChange={loadBooks}></Books>}/>
               <Route path="/books/:id" element={<BookDetailPage onDelete={loadBooks} />} />
               <Route path="/books/add" element={<AddBookPage onAddBook={loadBooks}/>}/>
+              <Route
+                  path="/books/favorites"
+                  element={<FavoriteBooksPage books={books.filter(b => b.favorite)} onChange={loadBooks} />}
+              />
               <Route element={<ProtectedRoute user={user} />} >
                   <Route path="/books/:id/edit" element={<BookEditPage onEdit={loadBooks} />} />
               </Route>
