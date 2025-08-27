@@ -42,7 +42,7 @@ class BookServiceTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false,
+                true,
                 null
         );
 
@@ -70,7 +70,7 @@ class BookServiceTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false,
+                true,
                 null
         );
 
@@ -227,6 +227,59 @@ class BookServiceTest {
         assertTrue(result.isEmpty());
         verify(bookRepo).findById("999");
         verify(bookRepo, never()).delete(any(Book.class));
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void getByFavorite_true_returnsFavorites() {
+        // GIVEN
+        List<Book> response = List.of(book1, book3);
+        when(bookRepo.findByFavorite(true)).thenReturn(response);
+
+        // WHEN
+        List<Book> result = service.getByFavorite(true);
+
+        // THEN
+        assertEquals(response, result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(book1));
+        assertTrue(result.contains(book3));
+
+        verify(bookRepo).findByFavorite(true);
+        verifyNoMoreInteractions(bookRepo);
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void getByFavorite_true_returnsEmptyList() {
+        // GIVEN
+        when(bookRepo.findByFavorite(true)).thenReturn(List.of());
+
+        // WHEN
+        List<Book> result = service.getByFavorite(true);
+
+        // THEN
+        assertTrue(result.isEmpty());
+        verify(bookRepo).findByFavorite(true);
+        verifyNoInteractions(idService);
+    }
+
+    @Test
+    void getByFavorite_false_returnsNonFavorites() {
+        // GIVEN
+        List<Book> response = List.of(book2);
+        when(bookRepo.findByFavorite(false)).thenReturn(response);
+
+        // WHEN
+        List<Book> result = service.getByFavorite(false);
+
+        // THEN
+        assertEquals(response, result);
+        assertEquals(1, result.size());
+        assertTrue(result.contains(book2));
+
+        verify(bookRepo).findByFavorite(false);
+        verifyNoMoreInteractions(bookRepo);
         verifyNoInteractions(idService);
     }
 }
