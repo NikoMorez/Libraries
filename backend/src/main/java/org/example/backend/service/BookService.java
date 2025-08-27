@@ -31,9 +31,10 @@ public class BookService {
         String newId = idService.randomId();
         boolean bookmark = false;
         boolean favorite = false;
+        Double rating = null;
         return bookRepo.save(new Book(
                 newId, book.title(), book.author(), book.isbn(), book.description(), book.publicationDate(),
-                book.smallThumbnail(), book.thumbnail(), book.categories(), bookmark, favorite
+                book.smallThumbnail(), book.thumbnail(), book.categories(), bookmark, favorite, rating
         ));
     }
 
@@ -50,7 +51,8 @@ public class BookService {
                     bookDto.thumbnail(),
                     bookDto.categories(),
                     bookDto.bookmark(),
-                    bookDto.favorite()
+                    bookDto.favorite(),
+                    bookDto.rating()
 
             );
             return bookRepo.save(updated);

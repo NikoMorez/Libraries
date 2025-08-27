@@ -9,4 +9,5 @@ export type BookDTO = {
     categories: string[];
     bookmark : boolean;
     favorite : boolean;
+    rating: number|null;
 }

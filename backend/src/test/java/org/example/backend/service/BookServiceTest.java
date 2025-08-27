@@ -42,7 +42,9 @@ class BookServiceTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false);
+                false,
+                null
+        );
 
         this.book2 = new Book("2",
                 "1984",
@@ -54,7 +56,9 @@ class BookServiceTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false);
+                false,
+                null
+        );
 
         this.book3 = new Book("3",
                 "Die unendliche Geschichte",
@@ -66,7 +70,9 @@ class BookServiceTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false);
+                false,
+                null
+        );
 
         this.bookDTO3 = new BookDTO("Die unendliche Geschichte",
                 "Michael Ende",
@@ -78,7 +84,9 @@ class BookServiceTest {
                 new ArrayList<>()
                 ,
                 false,
-                false);
+                false,
+                null
+        );
     }
 
     @Test

@@ -41,7 +41,8 @@ class ApiControllerTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false
+                false,
+                null
         );
 
         Book book2 = new Book("2",
@@ -54,7 +55,8 @@ class ApiControllerTest {
                 "",
                 new ArrayList<>(),
                 false,
-                false
+                false,
+                null
         );
 
         bookRepo.save(book1);
